@@ -176,6 +176,27 @@ dd:not(:last-child) {
   margin-bottom: .5rem;
 }
 
+.md h1 {
+  font-size: 1.25rem;
+  line-height: 1.15;
+  font-weight: bold;
+}
+
+.md h2 {
+  font-size: 1.125rem;
+  line-height: 1.15;
+  font-weight: bold;
+}
+
+.md h3 {
+  font-weight: bold;
+}
+
+.md h4 {
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
 .post-date {
   width: 130px;
 }
