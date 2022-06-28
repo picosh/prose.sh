@@ -237,14 +237,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	header, _ := dbpool.FindPostWithFilename("_header", user.ID)
 	blogName := GetBlogName(username)
-	if header != nil {
-		headerParsed := ParseText(header.Text)
-		if headerParsed.MetaData.Title != "" {
-			blogName = headerParsed.MetaData.Title
-		}
-	}
 
 	post, err := dbpool.FindPostWithFilename(filename, user.ID)
 	if err != nil {

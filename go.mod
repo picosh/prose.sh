@@ -8,7 +8,7 @@ require (
 	github.com/gorilla/feeds v1.1.1
 	github.com/picosh/cms v0.0.0-20220627163829-91fd078ba0ed
 	github.com/picosh/send v0.0.0-20220627163801-862fc4cce9ec
-	github.com/yuin/goldmark v1.3.5
+	github.com/yuin/goldmark v1.4.6
 	go.uber.org/zap v1.21.0
 	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d
 )
@@ -33,9 +33,11 @@ require (
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.12.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/yuin/goldmark-meta v1.1.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/sys v0.0.0-20220624220833-87e55d714810 // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
+	gopkg.in/yaml.v2 v2.3.0 // indirect
 )
