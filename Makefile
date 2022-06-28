@@ -4,6 +4,10 @@ PGUSER?="postgres"
 PORT?="5432"
 DB_CONTAINER?=prosesh_db_1
 
+test:
+	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:latest golangci-lint run -E goimports -E godot
+.PHONY: test
+
 build:
 	go build -o build/web ./cmd/web
 	go build -o build/ssh ./cmd/ssh

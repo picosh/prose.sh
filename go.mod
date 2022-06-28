@@ -7,8 +7,9 @@ require (
 	github.com/gliderlabs/ssh v0.3.4
 	github.com/gorilla/feeds v1.1.1
 	github.com/picosh/cms v0.0.0-20220628165515-db245895ebb1
-	github.com/picosh/send v0.0.0-20220627163801-862fc4cce9ec
-	github.com/yuin/goldmark v1.4.6
+	github.com/picosh/send v0.0.0-20220628191700-86d50642a68a
+	github.com/yuin/goldmark v1.4.12
+	github.com/yuin/goldmark-meta v1.1.0
 	go.uber.org/zap v1.21.0
 	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d
 )
@@ -22,6 +23,7 @@ require (
 	github.com/charmbracelet/keygen v0.3.0 // indirect
 	github.com/charmbracelet/lipgloss v0.5.0 // indirect
 	github.com/containerd/console v1.0.3 // indirect
+	github.com/kr/fs v0.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.10.6 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
@@ -32,12 +34,12 @@ require (
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.12.0 // indirect
+	github.com/pkg/sftp v1.13.5 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
-	github.com/yuin/goldmark-meta v1.1.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/sys v0.0.0-20220627191245-f75cf1eec38b // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
-	gopkg.in/yaml.v2 v2.3.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
