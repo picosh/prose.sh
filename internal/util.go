@@ -70,7 +70,7 @@ func IsText(s string) bool {
 	return true
 }
 
-var allowedExtensions = []string{".txt"}
+var allowedExtensions = []string{".md"}
 
 // IsTextFile reports whether the file has a known extension indicating
 // a text file, or if a significant chunk of the specified file looks like

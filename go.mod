@@ -6,9 +6,9 @@ require (
 	github.com/charmbracelet/wish v0.5.0
 	github.com/gliderlabs/ssh v0.3.4
 	github.com/gorilla/feeds v1.1.1
-	github.com/neurosnap/lists.sh v0.0.0-20220627152156-42854a9c5cc1
 	github.com/picosh/cms v0.0.0-20220627163829-91fd078ba0ed
 	github.com/picosh/send v0.0.0-20220627163801-862fc4cce9ec
+	github.com/yuin/goldmark v1.3.5
 	go.uber.org/zap v1.21.0
 	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d
 )
@@ -22,6 +22,7 @@ require (
 	github.com/charmbracelet/keygen v0.3.0 // indirect
 	github.com/charmbracelet/lipgloss v0.5.0 // indirect
 	github.com/containerd/console v1.0.3 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.10.6 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect

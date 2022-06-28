@@ -59,7 +59,7 @@ type PostPageData struct {
 	Description  string
 	Username     string
 	BlogName     string
-	Text         string
+	Contents     template.HTML
 	PublishAtISO string
 	PublishAt    string
 }
@@ -157,7 +157,6 @@ func blogHandler(w http.ResponseWriter, r *http.Request) {
 
 	ts, err := renderTemplate([]string{
 		"./html/blog.page.tmpl",
-		"./html/list.partial.tmpl",
 	})
 
 	if err != nil {
@@ -267,12 +266,11 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		PublishAtISO: post.PublishAt.Format(time.RFC3339),
 		Username:     username,
 		BlogName:     blogName,
-		Text:         parsedText.Text,
+		Contents:     template.HTML(parsedText.Html),
 	}
 
 	ts, err := renderTemplate([]string{
 		"./html/post.page.tmpl",
-		"./html/list.partial.tmpl",
 	})
 
 	if err != nil {
@@ -397,7 +395,7 @@ func rssBlogHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ts, err := template.ParseFiles("./html/rss.page.tmpl", "./html/list.partial.tmpl")
+	ts, err := template.ParseFiles("./html/rss.page.tmpl")
 	if err != nil {
 		logger.Error(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -421,7 +419,7 @@ func rssBlogHandler(w http.ResponseWriter, r *http.Request) {
 		parsed := ParseText(post.Text)
 		var tpl bytes.Buffer
 		data := &PostPageData{
-			Text: parsed.Text,
+			Contents: template.HTML(parsed.Html),
 		}
 		if err := ts.Execute(&tpl, data); err != nil {
 			continue
@@ -465,7 +463,7 @@ func rssHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ts, err := template.ParseFiles("./html/rss.page.tmpl", "./html/list.partial.tmpl")
+	ts, err := template.ParseFiles("./html/rss.page.tmpl")
 	if err != nil {
 		logger.Error(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -485,7 +483,7 @@ func rssHandler(w http.ResponseWriter, r *http.Request) {
 		parsed := ParseText(post.Text)
 		var tpl bytes.Buffer
 		data := &PostPageData{
-			Text:    parsed.Text,
+			Contents: template.HTML(parsed.Html),
 		}
 		if err := ts.Execute(&tpl, data); err != nil {
 			continue
@@ -606,7 +604,7 @@ func StartApiServer() {
 	handler := CreateServe(mainRoutes, subdomainRoutes, cfg, db, logger)
 	router := http.HandlerFunc(handler)
 
-	port := GetEnv("LISTS_WEB_PORT", "3000")
+	port := GetEnv("PROSE_WEB_PORT", "3000")
 	portStr := fmt.Sprintf(":%s", port)
 	logger.Infof("Starting server on port %s", port)
 	logger.Infof("Subdomains enabled: %t", cfg.SubdomainsEnabled)
