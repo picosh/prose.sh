@@ -60,14 +60,19 @@
     <section>
         <h2 class="text-lg font-bold">You control the source files</h2>
         <p>Create posts using your favorite editor in plain text files.</p>
-        <code>~/blog/days-in-week.md</code>
-        <pre>Sunday
-Monday
-Tuesday
-Wednesday
-Thursday
-Friday
-Saturday</pre>
+        <code>~/blog/hello-world.md</code>
+        <pre># hello world!
+
+This is my first blog post.
+
+Check out some resources:
+
+- [lists.sh](https://lists.sh)
+- [erock.io](https://erock.io)
+- [pico.sh](https://pico.sh)
+
+Cya!
+</pre>
     </section>
 
     <section>
@@ -76,7 +81,7 @@ Saturday</pre>
             When your post is ready to be published, copy the file to our server with a familiar
             command:
         </p>
-        <pre>scp ~/blog/*.txt {{.Site.Domain}}:/</pre>
+        <pre>scp ~/blog/*.md {{.Site.Domain}}:/</pre>
         <div class="text-sm font-italic note">note: if using openssh v9+, also supply the `-O` flag.</div>
         <p>We'll either create or update the posts for you.</p>
     </section>

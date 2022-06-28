@@ -64,7 +64,7 @@ func (h *DbHandler) Write(s ssh.Session, entry *send.FileEntry) error {
 	}
 
 	if !IsTextFile(text, entry.Filepath) {
-		return fmt.Errorf("WARNING: (%s) invalid file, format must be '.txt' and the contents must be plain text, skipping", entry.Name)
+		return fmt.Errorf("WARNING: (%s) invalid file, format must be '.md' and the contents must be plain text, skipping", entry.Name)
 	}
 
 	parsedText := ParseText(text)
