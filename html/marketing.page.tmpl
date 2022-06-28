@@ -1,0 +1,133 @@
+{{template "base" .}}
+
+{{define "title"}}{{.Site.Domain}} -- a smol blog platform{{end}}
+
+{{define "meta"}}
+<meta name="description" content="a smol blog platform" />
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{.Site.Domain}}">
+<meta property="og:url" content="https://{{.Site.Domain}}">
+<meta property="og:title" content="{{.Site.Domain}}">
+<meta property="og:description" content="a small blog platform">
+
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:url" content="https://{{.Site.Domain}}">
+<meta property="twitter:title" content="{{.Site.Domain}}">
+<meta property="twitter:description" content="a smol blog platform">
+<meta name="twitter:image" content="https://{{.Site.Domain}}/card.png" />
+<meta name="twitter:image:src" content="https://{{.Site.Domain}}/card.png" />
+
+<meta property="og:image:width" content="300" />
+<meta property="og:image:height" content="300" />
+<meta itemprop="image" content="https://{{.Site.Domain}}/card.png" />
+<meta property="og:image" content="https://{{.Site.Domain}}/card.png" />
+{{end}}
+
+{{define "body"}}
+<header class="text-center">
+    <h1 class="text-2xl font-bold">{{.Site.Domain}}</h1>
+    <p class="text-lg">A smol blog platform</p>
+    <p class="text-lg"><a href="/read">discover</a> some interesting posts</p>
+    <hr />
+</header>
+
+<main>
+    <section>
+        <h2 class="text-lg font-bold">Examples</h2>
+        <p>
+            <a href="//erock.{{.Site.Domain}}">blog</a> |
+            <a href="https://github.com/neurosnap/prose-blog">blog source</a> |
+            <a href="//news.{{.Site.Domain}}">official blog</a>
+        </p>
+    </section>
+
+    <section>
+        <h2 class="text-lg font-bold">Create your account with Public-Key Cryptography</h2>
+        <p>We don't want your email address.</p>
+        <p>To get started, simply ssh into our content management system:</p>
+        <pre>ssh new@{{.Site.Domain}}</pre>
+        <div class="text-sm font-italic note">
+            note: <code>new</code> is a special username that will always send you to account
+            creation.
+        </div>
+        <p>
+            After that, just set a username and you're ready to start writing! When you SSH
+            again, use your username that you set in the CMS.
+        </p>
+    </section>
+
+    <section>
+        <h2 class="text-lg font-bold">You control the source files</h2>
+        <p>Create posts using your favorite editor in plain text files.</p>
+        <code>~/blog/days-in-week.md</code>
+        <pre>Sunday
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday</pre>
+    </section>
+
+    <section>
+        <h2 class="text-lg font-bold">Publish your posts with one command</h2>
+        <p>
+            When your post is ready to be published, copy the file to our server with a familiar
+            command:
+        </p>
+        <pre>scp ~/blog/*.txt {{.Site.Domain}}:/</pre>
+        <div class="text-sm font-italic note">note: if using openssh v9+, also supply the `-O` flag.</div>
+        <p>We'll either create or update the posts for you.</p>
+    </section>
+
+    <section>
+        <h2 class="text-lg font-bold">Terminal workflow without installation</h2>
+        <p>
+            Since we are leveraging tools you already have on your computer
+            (<code>ssh</code> and <code>scp</code>), there is nothing to install.
+        </p>
+        <p>
+            This provides the convenience of a web app, but from inside your terminal!
+        </p>
+    </section>
+
+    <section>
+        <h2 class="text-lg font-bold">Features</h2>
+        <ul>
+            <li>Markdown</li>
+            <li>Looks great on any device</li>
+            <li>Bring your own editor</li>
+            <li>You control the source files</li>
+            <li>Terminal workflow with no installation</li>
+            <li>Public-key based authentication</li>
+            <li>No ads, zero tracking</li>
+            <li>No platform lock-in</li>
+            <li>No javascript</li>
+            <li>Subscriptions via RSS</li>
+            <li>Not a platform for todos</li>
+            <li>Minimalist design</li>
+            <li>100% open source</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 class="text-lg font-bold">Philosophy</h2>
+        <p>
+            The goal of this blogging platform is to make it
+            simple to use the tools you love to write and publish your thoughts.  There is no installation,
+            signup is as easy as SSH'ing into our CMS, and publishing content is as easy as
+            copying files to our server.
+        </p>
+    </section>
+
+    <section>
+        <h2 class="text-lg font-bold">Roadmap</h2>
+        <ol>
+            <li>???</li>
+        </ol>
+    </section>
+</main>
+
+{{template "marketing-footer" .}}
+{{end}}

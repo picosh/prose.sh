@@ -1,0 +1,8 @@
+*.prose.sh, prose.sh {
+	reverse_proxy web:3000
+	tls hello@prose.sh
+	tls {
+		dns cloudflare {env.CF_API_TOKEN}
+	}
+	encode zstd gzip
+}

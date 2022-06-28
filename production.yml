@@ -1,0 +1,62 @@
+version: "3.7"
+
+services:
+  caddy:
+    image: neurosnap/prose-caddy
+    restart: unless-stopped
+    env_file:
+      - .env.prod
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - "443:443"
+      - "80:80"
+    links:
+      - web
+  db:
+    image: postgres
+    restart: unless-stopped
+    env_file:
+      - .env.prod
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  web:
+    image: neurosnap/prose-web
+    restart: unless-stopped
+    env_file:
+      - .env.prod
+    links:
+      - db
+  gemini:
+    image: neurosnap/prose-gemini
+    restart: unless-stopped
+    environment:
+      - LISTS_SUBDOMAINS=0
+    env_file:
+      - .env.prod
+    ports:
+      - "1965:1965"
+    links:
+      - db
+    volumes:
+      - gemini_data:/var/lib/gemini/certs
+  ssh:
+    image: neurosnap/prose-ssh
+    restart: unless-stopped
+    ports:
+      - "22:2222"
+    env_file:
+      - .env.prod
+    links:
+      - db
+    volumes:
+      - ssh_data:/app/ssh_data
+
+volumes:
+  db_data:
+  caddy_data:
+  ssh_data:
+  caddy_config:
+  gemini_data:
