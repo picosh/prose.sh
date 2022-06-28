@@ -59,8 +59,7 @@ type PostPageData struct {
 	Description  string
 	Username     string
 	BlogName     string
-	ListType     string
-	Items        []*pkg.ListItem
+	Text         string
 	PublishAtISO string
 	PublishAt    string
 }
@@ -110,17 +109,21 @@ func createPageHandler(fname string) http.HandlerFunc {
 	}
 }
 
+type Link struct {
+	URL  string
+	Text string
+}
+
 type HeaderTxt struct {
 	Title    string
 	Bio      string
-	Nav      []*pkg.ListItem
-	HasItems bool
+	Nav      []*Link
+	HasLinks bool
 }
 
 type ReadmeTxt struct {
-	HasItems bool
-	ListType string
-	Items    []*pkg.ListItem
+	HasText bool
+	Text    string
 }
 
 func GetUsernameFromRequest(r *http.Request) string {
@@ -171,39 +174,16 @@ func blogHandler(w http.ResponseWriter, r *http.Request) {
 
 	postCollection := make([]PostItemData, 0, len(posts))
 	for _, post := range posts {
-		if post.Filename == "_header" {
-			parsedText := pkg.ParseText(post.Text)
-			if parsedText.MetaData.Title != "" {
-				headerTxt.Title = parsedText.MetaData.Title
-			}
-
-			if parsedText.MetaData.Description != "" {
-				headerTxt.Bio = parsedText.MetaData.Description
-			}
-
-			headerTxt.Nav = parsedText.Items
-			if len(headerTxt.Nav) > 0 {
-				headerTxt.HasItems = true
-			}
-		} else if post.Filename == "_readme" {
-			parsedText := pkg.ParseText(post.Text)
-			readmeTxt.Items = parsedText.Items
-			readmeTxt.ListType = parsedText.MetaData.ListType
-			if len(readmeTxt.Items) > 0 {
-				readmeTxt.HasItems = true
-			}
-		} else {
-			p := PostItemData{
-				URL:            template.URL(cfg.PostURL(post.Username, post.Filename)),
-				BlogURL:        template.URL(cfg.BlogURL(post.Username)),
-				Title:          FilenameToTitle(post.Filename, post.Title),
-				PublishAt:      post.PublishAt.Format("02 Jan, 2006"),
-				PublishAtISO:   post.PublishAt.Format(time.RFC3339),
-				UpdatedTimeAgo: TimeAgo(post.UpdatedAt),
-				UpdatedAtISO:   post.UpdatedAt.Format(time.RFC3339),
-			}
-			postCollection = append(postCollection, p)
+		p := PostItemData{
+			URL:            template.URL(cfg.PostURL(post.Username, post.Filename)),
+			BlogURL:        template.URL(cfg.BlogURL(post.Username)),
+			Title:          FilenameToTitle(post.Filename, post.Title),
+			PublishAt:      post.PublishAt.Format("02 Jan, 2006"),
+			PublishAtISO:   post.PublishAt.Format(time.RFC3339),
+			UpdatedTimeAgo: TimeAgo(post.UpdatedAt),
+			UpdatedAtISO:   post.UpdatedAt.Format(time.RFC3339),
 		}
+		postCollection = append(postCollection, p)
 	}
 
 	data := BlogPageData{
@@ -261,7 +241,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	header, _ := dbpool.FindPostWithFilename("_header", user.ID)
 	blogName := GetBlogName(username)
 	if header != nil {
-		headerParsed := pkg.ParseText(header.Text)
+		headerParsed := ParseText(header.Text)
 		if headerParsed.MetaData.Title != "" {
 			blogName = headerParsed.MetaData.Title
 		}
@@ -274,7 +254,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parsedText := pkg.ParseText(post.Text)
+	parsedText := ParseText(post.Text)
 
 	data := PostPageData{
 		Site:         *cfg.GetSiteData(),
@@ -282,13 +262,12 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		URL:          template.URL(cfg.PostURL(post.Username, post.Filename)),
 		BlogURL:      template.URL(cfg.BlogURL(username)),
 		Description:  post.Description,
-		ListType:     parsedText.MetaData.ListType,
 		Title:        FilenameToTitle(post.Filename, post.Title),
 		PublishAt:    post.PublishAt.Format("02 Jan, 2006"),
 		PublishAtISO: post.PublishAt.Format(time.RFC3339),
 		Username:     username,
 		BlogName:     blogName,
-		Items:        parsedText.Items,
+		Text:         parsedText.Text,
 	}
 
 	ts, err := renderTemplate([]string{
@@ -429,21 +408,6 @@ func rssBlogHandler(w http.ResponseWriter, r *http.Request) {
 		Title: GetBlogName(username),
 	}
 
-	for _, post := range posts {
-		if post.Filename == "_header" {
-			parsedText := pkg.ParseText(post.Text)
-			if parsedText.MetaData.Title != "" {
-				headerTxt.Title = parsedText.MetaData.Title
-			}
-
-			if parsedText.MetaData.Description != "" {
-				headerTxt.Bio = parsedText.MetaData.Description
-			}
-
-			break
-		}
-	}
-
 	feed := &feeds.Feed{
 		Title:       headerTxt.Title,
 		Link:        &feeds.Link{Href: cfg.BlogURL(username)},
@@ -454,11 +418,10 @@ func rssBlogHandler(w http.ResponseWriter, r *http.Request) {
 
 	var feedItems []*feeds.Item
 	for _, post := range posts {
-		parsed := pkg.ParseText(post.Text)
+		parsed := ParseText(post.Text)
 		var tpl bytes.Buffer
 		data := &PostPageData{
-			ListType: parsed.MetaData.ListType,
-			Items:    parsed.Items,
+			Text: parsed.Text,
 		}
 		if err := ts.Execute(&tpl, data); err != nil {
 			continue
@@ -519,11 +482,10 @@ func rssHandler(w http.ResponseWriter, r *http.Request) {
 
 	var feedItems []*feeds.Item
 	for _, post := range pager.Data {
-		parsed := pkg.ParseText(post.Text)
+		parsed := ParseText(post.Text)
 		var tpl bytes.Buffer
 		data := &PostPageData{
-			ListType: parsed.MetaData.ListType,
-			Items:    parsed.Items,
+			Text:    parsed.Text,
 		}
 		if err := ts.Execute(&tpl, data); err != nil {
 			continue
