@@ -6,7 +6,7 @@ require (
 	github.com/charmbracelet/wish v0.5.0
 	github.com/gliderlabs/ssh v0.3.4
 	github.com/gorilla/feeds v1.1.1
-	github.com/picosh/cms v0.0.0-20220627163829-91fd078ba0ed
+	github.com/picosh/cms v0.0.0-20220628165515-db245895ebb1
 	github.com/picosh/send v0.0.0-20220627163801-862fc4cce9ec
 	github.com/yuin/goldmark v1.4.6
 	go.uber.org/zap v1.21.0
@@ -17,8 +17,8 @@ require (
 	github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect
 	github.com/atotto/clipboard v0.1.4 // indirect
 	github.com/caarlos0/sshmarshal v0.1.0 // indirect
-	github.com/charmbracelet/bubbles v0.11.0 // indirect
-	github.com/charmbracelet/bubbletea v0.21.0 // indirect
+	github.com/charmbracelet/bubbles v0.12.0 // indirect
+	github.com/charmbracelet/bubbletea v0.22.0 // indirect
 	github.com/charmbracelet/keygen v0.3.0 // indirect
 	github.com/charmbracelet/lipgloss v0.5.0 // indirect
 	github.com/containerd/console v1.0.3 // indirect
@@ -37,7 +37,7 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
-	golang.org/x/sys v0.0.0-20220624220833-87e55d714810 // indirect
+	golang.org/x/sys v0.0.0-20220627191245-f75cf1eec38b // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 )

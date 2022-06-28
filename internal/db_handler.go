@@ -25,9 +25,10 @@ type DbHandler struct {
 	cfg    *ConfigSite
 }
 
-func NewDbHandler(dbpool db.DB) *DbHandler {
+func NewDbHandler(dbpool db.DB, cfg *ConfigSite) *DbHandler {
 	return &DbHandler{
 		dbpool: dbpool,
+		cfg:    cfg,
 	}
 }
 
@@ -52,7 +53,7 @@ func (h *DbHandler) Validate(s ssh.Session) error {
 }
 
 func (h *DbHandler) Write(s ssh.Session, entry *send.FileEntry) error {
-	logger := h.cfg.CreateLogger()
+	logger := h.cfg.Logger
 	userID := h.user.ID
 	filename := SanitizeFileExt(entry.Name)
 	title := filename

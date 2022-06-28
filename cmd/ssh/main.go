@@ -43,7 +43,7 @@ func proxyMiddleware() wish.Middleware {
 
 			if len(cmd) == 0 {
 				fn := withMiddleware(
-					bm.Middleware(cms.Middleware(cfg.ConfigCms)),
+					bm.Middleware(cms.Middleware(&cfg.ConfigCms, cfg)),
 					lm.Middleware(),
 				)
 				fn(s)
@@ -51,8 +51,8 @@ func proxyMiddleware() wish.Middleware {
 			}
 
 			if cmd[0] == "scp" {
-				dbh := postgres.NewDB(cfg.ConfigCms)
-				handler := internal.NewDbHandler(dbh)
+				dbh := postgres.NewDB(&cfg.ConfigCms)
+				handler := internal.NewDbHandler(dbh, cfg)
 				defer dbh.Close()
 				fn := withMiddleware(send.Middleware(handler))
 				fn(s)
@@ -64,7 +64,7 @@ func proxyMiddleware() wish.Middleware {
 
 func main() {
 	cfg := internal.NewConfigSite()
-	logger := cfg.CreateLogger()
+	logger := cfg.Logger
 	host := internal.GetEnv("PROSE_HOST", "0.0.0.0")
 	port := internal.GetEnv("PROSE_SSH_PORT", "2222")
 
