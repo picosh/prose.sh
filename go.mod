@@ -34,6 +34,7 @@ require (
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.12.0 // indirect
+	github.com/picosh/proxy v0.0.0-20220629231611-a4aae627f0a6 // indirect
 	github.com/pkg/sftp v1.13.5 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect

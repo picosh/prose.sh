@@ -1,8 +1,5 @@
 package main
 
-// An example Bubble Tea server. This will put an ssh session into alt screen
-// and continually print up to date terminal information.
-
 import (
 	"context"
 	"fmt"
@@ -18,6 +15,7 @@ import (
 	"github.com/picosh/cms"
 	"github.com/picosh/cms/db/postgres"
 	"github.com/picosh/prose.sh/internal"
+	"github.com/picosh/proxy"
 	"github.com/picosh/send"
 	"github.com/picosh/send/scp"
 )
@@ -28,12 +26,26 @@ func (me *SSHServer) authHandler(ctx ssh.Context, key ssh.PublicKey) bool {
 	return true
 }
 
-func withMiddleware(mw ...wish.Middleware) ssh.Handler {
-	h := func(s ssh.Session) {}
-	for _, m := range mw {
-		h = m(h)
+func router(sh ssh.Handler, s ssh.Session) []wish.Middleware {
+	cmd := s.Command()
+	cfg := internal.NewConfigSite()
+	mdw := []wish.Middleware{}
+
+	if len(cmd) == 0 {
+		mdw = append(mdw,
+			bm.Middleware(cms.Middleware(&cfg.ConfigCms, cfg)),
+			lm.Middleware(),
+		)
 	}
-	return h
+
+	if cmd[0] == "scp" {
+		dbh := postgres.NewDB(&cfg.ConfigCms)
+		handler := internal.NewDbHandler(dbh, cfg)
+		defer dbh.Close()
+		mdw = append(mdw, scp.Middleware(handler))
+	}
+
+	return mdw
 }
 
 func proxyMiddleware(server *ssh.Server) error {
@@ -46,30 +58,7 @@ func proxyMiddleware(server *ssh.Server) error {
 		return err
 	}
 
-	return wish.WithMiddleware(func(sh ssh.Handler) ssh.Handler {
-		return func(s ssh.Session) {
-			cmd := s.Command()
-			cfg := internal.NewConfigSite()
-
-			if len(cmd) == 0 {
-				fn := withMiddleware(
-					bm.Middleware(cms.Middleware(&cfg.ConfigCms, cfg)),
-					lm.Middleware(),
-				)
-				fn(s)
-				return
-			}
-
-			if cmd[0] == "scp" {
-				dbh := postgres.NewDB(&cfg.ConfigCms)
-				handler := internal.NewDbHandler(dbh, cfg)
-				defer dbh.Close()
-				fn := withMiddleware(scp.Middleware(handler))
-				fn(s)
-				return
-			}
-		}
-	})(server)
+	return proxy.WithProxy(router)(server)
 }
 
 func main() {
