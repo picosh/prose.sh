@@ -49,7 +49,7 @@
         <pre>ssh new@{{.Site.Domain}}</pre>
         <div class="text-sm font-italic note">
             note: <code>new</code> is a special username that will always send you to account
-            creation.
+            creation, even with multiple accounts associated with your key-pair.
         </div>
         <p>
             After that, just set a username and you're ready to start writing! When you SSH
@@ -82,7 +82,6 @@ Cya!
             command:
         </p>
         <pre>scp ~/blog/*.md {{.Site.Domain}}:/</pre>
-        <div class="text-sm font-italic note">note: if using openssh v9+, also supply the `-O` flag.</div>
         <p>We'll either create or update the posts for you.</p>
     </section>
 
@@ -122,6 +121,10 @@ Cya!
             simple to use the tools you love to write and publish your thoughts.  There is no installation,
             signup is as easy as SSH'ing into our CMS, and publishing content is as easy as
             copying files to our server.
+        </p>
+
+        <p>
+            If you'd like to read more about our group, please read our profile at <a href="https://pico.sh">pico.sh</a>.
         </p>
     </section>
 
