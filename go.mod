@@ -7,7 +7,8 @@ require (
 	github.com/gliderlabs/ssh v0.3.4
 	github.com/gorilla/feeds v1.1.1
 	github.com/picosh/cms v0.0.0-20220628165515-db245895ebb1
-	github.com/picosh/send v0.0.0-20220629040654-ed7e6351cef5
+	github.com/picosh/proxy v0.0.0-20220629231611-a4aae627f0a6
+	github.com/picosh/send v0.0.0-20220630020731-8c0bcdb0c71c
 	github.com/yuin/goldmark v1.4.12
 	github.com/yuin/goldmark-meta v1.1.0
 	go.uber.org/zap v1.21.0
@@ -34,7 +35,6 @@ require (
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.12.0 // indirect
-	github.com/picosh/proxy v0.0.0-20220629231611-a4aae627f0a6 // indirect
 	github.com/pkg/sftp v1.13.5 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect

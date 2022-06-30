@@ -66,14 +66,10 @@ github.com/muesli/termenv v0.12.0 h1:KuQRUE3PgxRFWhq4gHvZtPSLCGDqM5q/cYr1pZ39ytc
 github.com/muesli/termenv v0.12.0/go.mod h1:WCCv32tusQ/EEZ5S8oUIIrC/nIuBcxCVqlN4Xfkv+7A=
 github.com/picosh/cms v0.0.0-20220628165515-db245895ebb1 h1:+E9OSvCM4wGqByNX9ZILbmKSv/U0yTIudGkbgVK98v4=
 github.com/picosh/cms v0.0.0-20220628165515-db245895ebb1/go.mod h1:+J3g/y3Fkqq32JVNsMvvW81bYAz8fHeocOCoD306tIU=
-github.com/picosh/proxy v0.0.0-20220629230931-86a0c2cac72c h1:kMeEvR1yYhWCtHmkLCJYrqncQ8xBPQ3L6Rco5rhqWvw=
-github.com/picosh/proxy v0.0.0-20220629230931-86a0c2cac72c/go.mod h1:JvCY+Ux50WdVEztz8ZNoZRKKOai+5o0nG9KIFrYD23E=
 github.com/picosh/proxy v0.0.0-20220629231611-a4aae627f0a6 h1:GrxACs8/cCcrEAa/yoFohqdxV1ONNk15B48+lm099Tg=
 github.com/picosh/proxy v0.0.0-20220629231611-a4aae627f0a6/go.mod h1:JvCY+Ux50WdVEztz8ZNoZRKKOai+5o0nG9KIFrYD23E=
-github.com/picosh/send v0.0.0-20220628191700-86d50642a68a h1:N7DTwruOuRS/m9qdmR2tpSAsIK/rvzpHPCj1fODcDuA=
-github.com/picosh/send v0.0.0-20220628191700-86d50642a68a/go.mod h1:HFF8K5RDm6r8vMFsPEHLHDpYHkNxaRTxrkmKWaw99xg=
-github.com/picosh/send v0.0.0-20220629040654-ed7e6351cef5 h1:ZwbKzjmLNNyhDlcHMGP7WNvm1RxK8Mn6aksOjOpceFE=
-github.com/picosh/send v0.0.0-20220629040654-ed7e6351cef5/go.mod h1:HFF8K5RDm6r8vMFsPEHLHDpYHkNxaRTxrkmKWaw99xg=
+github.com/picosh/send v0.0.0-20220630020731-8c0bcdb0c71c h1:YBfVVBzPu9T1Bcdf+b6aMPMMsHNzx8vPD5V4iwdpOW8=
+github.com/picosh/send v0.0.0-20220630020731-8c0bcdb0c71c/go.mod h1:HFF8K5RDm6r8vMFsPEHLHDpYHkNxaRTxrkmKWaw99xg=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/sftp v1.13.5 h1:a3RLUqkyjYRtBTZJZ1VRrKbN3zhuPLlUc3sphVz81go=

@@ -16,8 +16,8 @@ import (
 	"github.com/picosh/cms/db/postgres"
 	"github.com/picosh/prose.sh/internal"
 	"github.com/picosh/proxy"
-	"github.com/picosh/send"
 	"github.com/picosh/send/scp"
+	"github.com/picosh/send/sftp"
 )
 
 type SSHServer struct{}
@@ -26,53 +26,50 @@ func (me *SSHServer) authHandler(ctx ssh.Context, key ssh.PublicKey) bool {
 	return true
 }
 
-func router(sh ssh.Handler, s ssh.Session) []wish.Middleware {
-	cmd := s.Command()
-	cfg := internal.NewConfigSite()
-	mdw := []wish.Middleware{}
+func createRouter(handler *internal.DbHandler) proxy.Router {
+	return func(sh ssh.Handler, s ssh.Session) []wish.Middleware {
+		cmd := s.Command()
+		mdw := []wish.Middleware{}
 
-	if len(cmd) == 0 {
-		mdw = append(mdw,
-			bm.Middleware(cms.Middleware(&cfg.ConfigCms, cfg)),
-			lm.Middleware(),
-		)
+		if len(cmd) == 0 {
+			mdw = append(mdw,
+				bm.Middleware(cms.Middleware(&handler.Cfg.ConfigCms, handler.Cfg)),
+				lm.Middleware(),
+			)
+		} else if cmd[0] == "scp" {
+			mdw = append(mdw, scp.Middleware(handler))
+		}
+
+		return mdw
 	}
-
-	if cmd[0] == "scp" {
-		dbh := postgres.NewDB(&cfg.ConfigCms)
-		handler := internal.NewDbHandler(dbh, cfg)
-		defer dbh.Close()
-		mdw = append(mdw, scp.Middleware(handler))
-	}
-
-	return mdw
 }
 
-func proxyMiddleware(server *ssh.Server) error {
-	cfg := internal.NewConfigSite()
-	dbh := postgres.NewDB(&cfg.ConfigCms)
-	handler := internal.NewDbHandler(dbh, cfg)
+func withProxy(handler *internal.DbHandler) ssh.Option {
+	return func(server *ssh.Server) error {
+		err := sftp.SSHOption(handler)(server)
+		if err != nil {
+			return err
+		}
 
-	err := send.Middleware(handler)(server)
-	if err != nil {
-		return err
+		return proxy.WithProxy(createRouter(handler))(server)
 	}
-
-	return proxy.WithProxy(router)(server)
 }
 
 func main() {
-	cfg := internal.NewConfigSite()
-	logger := cfg.Logger
 	host := internal.GetEnv("PROSE_HOST", "0.0.0.0")
 	port := internal.GetEnv("PROSE_SSH_PORT", "2222")
+	cfg := internal.NewConfigSite()
+	logger := cfg.Logger
+	dbh := postgres.NewDB(&cfg.ConfigCms)
+	defer dbh.Close()
+	handler := internal.NewDbHandler(dbh, cfg)
 
 	sshServer := &SSHServer{}
 	s, err := wish.NewServer(
 		wish.WithAddress(fmt.Sprintf("%s:%s", host, port)),
 		wish.WithHostKeyPath("ssh_data/term_info_ed25519"),
 		wish.WithPublicKeyAuth(sshServer.authHandler),
-		proxyMiddleware,
+		withProxy(handler),
 	)
 	if err != nil {
 		logger.Fatal(err)
