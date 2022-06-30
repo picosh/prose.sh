@@ -7,7 +7,7 @@ require (
 	github.com/gliderlabs/ssh v0.3.4
 	github.com/gorilla/feeds v1.1.1
 	github.com/picosh/cms v0.0.0-20220628165515-db245895ebb1
-	github.com/picosh/proxy v0.0.0-20220629231611-a4aae627f0a6
+	github.com/picosh/proxy v0.0.0-20220630041107-8ccb71a7591e
 	github.com/picosh/send v0.0.0-20220630020731-8c0bcdb0c71c
 	github.com/yuin/goldmark v1.4.12
 	github.com/yuin/goldmark-meta v1.1.0
