@@ -117,13 +117,13 @@ type Link struct {
 type HeaderTxt struct {
 	Title    string
 	Bio      string
-	Nav      []*Link
+	Nav      []Link
 	HasLinks bool
 }
 
 type ReadmeTxt struct {
-	HasText bool
-	Text    string
+	HasText  bool
+	Contents template.HTML
 }
 
 func GetUsernameFromRequest(r *http.Request) string {
@@ -173,16 +173,27 @@ func blogHandler(w http.ResponseWriter, r *http.Request) {
 
 	postCollection := make([]PostItemData, 0, len(posts))
 	for _, post := range posts {
-		p := PostItemData{
-			URL:            template.URL(cfg.PostURL(post.Username, post.Filename)),
-			BlogURL:        template.URL(cfg.BlogURL(post.Username)),
-			Title:          FilenameToTitle(post.Filename, post.Title),
-			PublishAt:      post.PublishAt.Format("02 Jan, 2006"),
-			PublishAtISO:   post.PublishAt.Format(time.RFC3339),
-			UpdatedTimeAgo: TimeAgo(post.UpdatedAt),
-			UpdatedAtISO:   post.UpdatedAt.Format(time.RFC3339),
+		if post.Filename == "_readme" {
+			parsedText := ParseText(post.Text)
+			headerTxt.Bio = parsedText.Description
+			headerTxt.Title = parsedText.Title
+			headerTxt.Nav = parsedText.Nav
+			readmeTxt.Contents = template.HTML(parsedText.Html)
+			if len(readmeTxt.Contents) > 0 {
+				readmeTxt.HasText = true
+			}
+		} else {
+			p := PostItemData{
+				URL:            template.URL(cfg.PostURL(post.Username, post.Filename)),
+				BlogURL:        template.URL(cfg.BlogURL(post.Username)),
+				Title:          FilenameToTitle(post.Filename, post.Title),
+				PublishAt:      post.PublishAt.Format("02 Jan, 2006"),
+				PublishAtISO:   post.PublishAt.Format(time.RFC3339),
+				UpdatedTimeAgo: TimeAgo(post.UpdatedAt),
+				UpdatedAtISO:   post.UpdatedAt.Format(time.RFC3339),
+			}
+			postCollection = append(postCollection, p)
 		}
-		postCollection = append(postCollection, p)
 	}
 
 	data := BlogPageData{
@@ -397,6 +408,21 @@ func rssBlogHandler(w http.ResponseWriter, r *http.Request) {
 
 	headerTxt := &HeaderTxt{
 		Title: GetBlogName(username),
+	}
+
+	for _, post := range posts {
+		if post.Filename == "_readme" {
+			parsedText := ParseText(post.Text)
+			if parsedText.Title != "" {
+				headerTxt.Title = parsedText.Title
+			}
+
+			if parsedText.Description != "" {
+				headerTxt.Bio = parsedText.Description
+			}
+
+			break
+		}
 	}
 
 	feed := &feeds.Feed{

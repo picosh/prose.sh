@@ -15,6 +15,7 @@ type MetaData struct {
 	PublishAt   *time.Time
 	Title       string
 	Description string
+	Nav         []Link
 }
 
 type ParsedText struct {
@@ -27,6 +28,23 @@ func toString(obj interface{}) string {
 		return ""
 	}
 	return obj.(string)
+}
+
+func toLinks(obj interface{}) []Link {
+	links := []Link{}
+	if obj == nil {
+		return links
+	}
+
+	raw := obj.(map[interface{}]interface{})
+	for k, v := range raw {
+		links = append(links, Link{
+			Text: k.(string),
+			URL:  v.(string),
+		})
+	}
+
+	return links
 }
 
 func ParseText(text string) *ParsedText {
@@ -51,12 +69,15 @@ func ParseText(text string) *ParsedText {
 		}
 	}
 
+	nav := toLinks(metaData["nav"])
+
 	return &ParsedText{
 		Html: buf.String(),
 		MetaData: &MetaData{
 			PublishAt:   &publishAt,
 			Title:       toString(metaData["title"]),
 			Description: toString(metaData["description"]),
+			Nav:         nav,
 		},
 	}
 }

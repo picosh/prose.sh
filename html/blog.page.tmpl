@@ -29,9 +29,7 @@
     {{if .Header.Bio}}<p class="text-lg">{{.Header.Bio}}</p>{{end}}
     <nav>
         {{range .Header.Nav}}
-            {{if .IsURL}}
-            <a href="{{.URL}}" class="text-lg">{{.Value}}</a> |
-            {{end}}
+        <a href="{{.URL}}" class="text-lg">{{.Text}}</a> |
         {{end}}
         <a href="{{.RSSURL}}" class="text-lg">rss</a>
     </nav>
@@ -41,7 +39,7 @@
     {{if .Readme.HasText}}
     <section>
         <article>
-            {{.Readme}}
+            {{.Readme.Contents}}
         </article>
         <hr />
     </section>

@@ -108,6 +108,33 @@ scp ./delete.md {{.Site.Domain}}:/</pre>
         <pre>scp ./taco-tuesday.md {{.Site.Domain}}:</pre>
     </section>
 
+    <section id="blog-readme">
+        <h2 class="text-xl">How can I customize my blog page?</h2>
+        <p>
+        There's a special file you can upload `_readme.md` that you can upload which will allow
+        users to add a bio and links to their blog landing page.
+        <pre>---
+title: some title!
+description: this is a great description
+nav:
+    - google: "https://google.com"
+    - site: "https://some.site"
+---
+
+Here is a quick intro to my personal blog!
+This will show up on the blog landing page.
+</pre>
+        </p>
+        <p>
+            List of available variables:
+            <ul>
+                <li>title (name of the blog, default: "X's blog")</li>
+                <li>description (description of blog)</li>
+                <li>nav (key=value pair that corresponds to text=href in html)</li>
+            </ul>
+        </p>
+    </section>
+
     <section id="blog-url">
         <h2 class="text-xl">What is my blog URL?</h2>
         <pre>https://{username}.{{.Site.Domain}}</pre>
