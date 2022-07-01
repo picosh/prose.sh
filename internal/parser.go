@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/alecthomas/chroma/formatters/html"
 	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting"
 	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
@@ -49,8 +51,18 @@ func toLinks(obj interface{}) []Link {
 
 func ParseText(text string) *ParsedText {
 	var buf bytes.Buffer
+	hili := highlighting.NewHighlighting(
+		highlighting.WithStyle("dracula"),
+		highlighting.WithFormatOptions(
+			html.WithLineNumbers(true),
+		),
+	)
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM, meta.Meta),
+		goldmark.WithExtensions(
+			extension.GFM,
+			meta.Meta,
+			hili,
+		),
 	)
 	context := parser.NewContext()
 	if err := md.Convert([]byte(text), &buf, parser.WithContext(context)); err != nil {

@@ -3,6 +3,7 @@ module github.com/picosh/prose.sh
 go 1.18
 
 require (
+	github.com/alecthomas/chroma v0.10.0
 	github.com/charmbracelet/wish v0.5.0
 	github.com/gliderlabs/ssh v0.3.4
 	github.com/gorilla/feeds v1.1.1
@@ -10,6 +11,7 @@ require (
 	github.com/picosh/proxy v0.0.0-20220630041107-8ccb71a7591e
 	github.com/picosh/send v0.0.0-20220630020731-8c0bcdb0c71c
 	github.com/yuin/goldmark v1.4.12
+	github.com/yuin/goldmark-highlighting v0.0.0-20220208100518-594be1970594
 	github.com/yuin/goldmark-meta v1.1.0
 	go.uber.org/zap v1.21.0
 	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d
@@ -24,6 +26,7 @@ require (
 	github.com/charmbracelet/keygen v0.3.0 // indirect
 	github.com/charmbracelet/lipgloss v0.5.0 // indirect
 	github.com/containerd/console v1.0.3 // indirect
+	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.10.6 // indirect

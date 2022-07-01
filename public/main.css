@@ -51,11 +51,10 @@ b, strong {
 code, kbd, samp, pre {
 	font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
 	font-size: 1rem;
-  background-color: var(--black);
+  background-color: var(--black) !important;
 }
 
 code {
-  padding: 0.1rem 0.4rem;
   border-radius: 5px;
 }
 
