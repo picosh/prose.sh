@@ -180,12 +180,14 @@ dd:not(:last-child) {
   font-size: 1.25rem;
   line-height: 1.15;
   font-weight: bold;
+  padding: 0.5rem 0;
 }
 
 .md h2 {
   font-size: 1.125rem;
   line-height: 1.15;
   font-weight: bold;
+  padding: 0.5rem 0;
 }
 
 .md h3 {
