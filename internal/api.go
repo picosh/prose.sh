@@ -176,7 +176,9 @@ func blogHandler(w http.ResponseWriter, r *http.Request) {
 		if post.Filename == "_readme" {
 			parsedText := ParseText(post.Text)
 			headerTxt.Bio = parsedText.Description
-			headerTxt.Title = parsedText.Title
+			if parsedText.Title != "" {
+				headerTxt.Title = parsedText.Title
+			}
 			headerTxt.Nav = parsedText.Nav
 			readmeTxt.Contents = template.HTML(parsedText.Html)
 			if len(readmeTxt.Contents) > 0 {
