@@ -1,3 +1,5 @@
+git.sr.ht/~erock/wish v0.0.0-20220704220931-0e051eba5255 h1:GqLO9ualX94dgD5CdE7nTKTUV3l1WiU49hoXfmvNz8U=
+git.sr.ht/~erock/wish v0.0.0-20220704220931-0e051eba5255/go.mod h1:QZKk7m9jc9iXah90daPGhQkSfNfxSVvpb6nfVeI+MM0=
 github.com/alecthomas/chroma v0.10.0 h1:7XDcGkCQopCNKjZHfYrNLraA+M7e0fMiJ/Mfikbfjek=
 github.com/alecthomas/chroma v0.10.0/go.mod h1:jtJATyUxlIORhUOFNA9NZDWGAQ8wpxQQqNSB4rjA/1s=
 github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be h1:9AeTilPcZAjCFIImctFaOjnTIavg87rW78vTPkQqLI8=

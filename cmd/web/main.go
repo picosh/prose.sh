@@ -1,6 +1,6 @@
 package main
 
-import "github.com/picosh/prose.sh/internal"
+import "git.sr.ht/~erock/wish/prose.sh/internal"
 
 func main() {
 	internal.StartApiServer()

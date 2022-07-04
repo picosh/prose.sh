@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/gorilla/feeds"
-	"github.com/picosh/cms/db"
-	"github.com/picosh/cms/db/postgres"
+	"git.sr.ht/~erock/wish/cms/db"
+	"git.sr.ht/~erock/wish/cms/db/postgres"
 )
 
 type PageData struct {

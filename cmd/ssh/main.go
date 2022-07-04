@@ -12,12 +12,12 @@ import (
 	bm "github.com/charmbracelet/wish/bubbletea"
 	lm "github.com/charmbracelet/wish/logging"
 	"github.com/gliderlabs/ssh"
-	"github.com/picosh/cms"
-	"github.com/picosh/cms/db/postgres"
-	"github.com/picosh/prose.sh/internal"
-	"github.com/picosh/proxy"
-	"github.com/picosh/send/scp"
-	"github.com/picosh/send/sftp"
+	"git.sr.ht/~erock/wish/cms"
+	"git.sr.ht/~erock/wish/cms/db/postgres"
+	"git.sr.ht/~erock/wish/prose.sh/internal"
+	"git.sr.ht/~erock/wish/proxy"
+	"git.sr.ht/~erock/wish/send/scp"
+	"git.sr.ht/~erock/wish/send/sftp"
 )
 
 type SSHServer struct{}

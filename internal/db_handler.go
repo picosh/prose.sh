@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/gliderlabs/ssh"
-	"github.com/picosh/cms/db"
-	"github.com/picosh/cms/util"
-	"github.com/picosh/send/utils"
+	"git.sr.ht/~erock/wish/cms/db"
+	"git.sr.ht/~erock/wish/cms/util"
+	"git.sr.ht/~erock/wish/send/utils"
 )
 
 type Opener struct {
