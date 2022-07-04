@@ -3,13 +3,11 @@ module git.sr.ht/~erock/prose.sh
 go 1.18
 
 require (
+	git.sr.ht/~erock/wish v0.0.0-20220704220931-0e051eba5255
 	github.com/alecthomas/chroma v0.10.0
 	github.com/charmbracelet/wish v0.5.0
 	github.com/gliderlabs/ssh v0.3.4
 	github.com/gorilla/feeds v1.1.1
-	github.com/picosh/cms v0.0.0-20220628165515-db245895ebb1
-	github.com/picosh/proxy v0.0.0-20220630041107-8ccb71a7591e
-	github.com/picosh/send v0.0.0-20220630020731-8c0bcdb0c71c
 	github.com/yuin/goldmark v1.4.12
 	github.com/yuin/goldmark-highlighting v0.0.0-20220208100518-594be1970594
 	github.com/yuin/goldmark-meta v1.1.0
@@ -18,7 +16,6 @@ require (
 )
 
 require (
-	git.sr.ht/~erock/wish v0.0.0-20220704220931-0e051eba5255 // indirect
 	github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect
 	github.com/atotto/clipboard v0.1.4 // indirect
 	github.com/caarlos0/sshmarshal v0.1.0 // indirect

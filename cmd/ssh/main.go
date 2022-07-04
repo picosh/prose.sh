@@ -8,16 +8,16 @@ import (
 	"syscall"
 	"time"
 
+	"git.sr.ht/~erock/prose.sh/internal"
+	"git.sr.ht/~erock/wish/cms"
+	"git.sr.ht/~erock/wish/cms/db/postgres"
+	"git.sr.ht/~erock/wish/proxy"
+	"git.sr.ht/~erock/wish/send/scp"
+	"git.sr.ht/~erock/wish/send/sftp"
 	"github.com/charmbracelet/wish"
 	bm "github.com/charmbracelet/wish/bubbletea"
 	lm "github.com/charmbracelet/wish/logging"
 	"github.com/gliderlabs/ssh"
-	"git.sr.ht/~erock/wish/cms"
-	"git.sr.ht/~erock/wish/cms/db/postgres"
-	"git.sr.ht/~erock/wish/prose.sh/internal"
-	"git.sr.ht/~erock/wish/proxy"
-	"git.sr.ht/~erock/wish/send/scp"
-	"git.sr.ht/~erock/wish/send/sftp"
 )
 
 type SSHServer struct{}
