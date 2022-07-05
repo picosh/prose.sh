@@ -2,7 +2,6 @@ package internal
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"time"
 
@@ -48,7 +47,7 @@ func toLinks(obj interface{}) ([]Link, error) {
 			})
 		}
 	default:
-		return links, errors.New(fmt.Sprintf("unsupported type for `nav` variable: %T", raw))
+		return links, fmt.Errorf("unsupported type for `nav` variable: %T", raw)
 	}
 
 	return links, nil
