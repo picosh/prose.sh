@@ -2,6 +2,8 @@ git.sr.ht/~erock/wish v0.0.0-20220704220931-0e051eba5255 h1:GqLO9ualX94dgD5CdE7n
 git.sr.ht/~erock/wish v0.0.0-20220704220931-0e051eba5255/go.mod h1:QZKk7m9jc9iXah90daPGhQkSfNfxSVvpb6nfVeI+MM0=
 git.sr.ht/~erock/wish v0.0.0-20220705140330-1ed0139ff2ad h1:zRlhS31C6//eBzZdwFPq/vxgEo151u1B30fawJQ1/IU=
 git.sr.ht/~erock/wish v0.0.0-20220705140330-1ed0139ff2ad/go.mod h1:QZKk7m9jc9iXah90daPGhQkSfNfxSVvpb6nfVeI+MM0=
+git.sr.ht/~erock/wish v0.0.0-20220705182935-a4976b5f449d h1:tkLW3i7+qaunBbccjZ5H/TFzl7YwGWHyJhGmQP441jI=
+git.sr.ht/~erock/wish v0.0.0-20220705182935-a4976b5f449d/go.mod h1:QZKk7m9jc9iXah90daPGhQkSfNfxSVvpb6nfVeI+MM0=
 github.com/alecthomas/chroma v0.10.0 h1:7XDcGkCQopCNKjZHfYrNLraA+M7e0fMiJ/Mfikbfjek=
 github.com/alecthomas/chroma v0.10.0/go.mod h1:jtJATyUxlIORhUOFNA9NZDWGAQ8wpxQQqNSB4rjA/1s=
 github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be h1:9AeTilPcZAjCFIImctFaOjnTIavg87rW78vTPkQqLI8=
