@@ -10,9 +10,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gorilla/feeds"
 	"git.sr.ht/~erock/wish/cms/db"
 	"git.sr.ht/~erock/wish/cms/db/postgres"
+	"github.com/gorilla/feeds"
 )
 
 type PageData struct {

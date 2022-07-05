@@ -5,10 +5,10 @@ import (
 	"io"
 	"time"
 
-	"github.com/gliderlabs/ssh"
 	"git.sr.ht/~erock/wish/cms/db"
 	"git.sr.ht/~erock/wish/cms/util"
 	"git.sr.ht/~erock/wish/send/utils"
+	"github.com/gliderlabs/ssh"
 )
 
 type Opener struct {
