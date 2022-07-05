@@ -69,10 +69,16 @@ func (h *DbHandler) Write(s ssh.Session, entry *utils.FileEntry) error {
 	}
 
 	if !IsTextFile(text, entry.Filepath) {
+		logger.Errorf("WARNING: (%s) invalid file, format must be '.md' and the contents must be plain text, skipping", entry.Name)
 		return fmt.Errorf("WARNING: (%s) invalid file, format must be '.md' and the contents must be plain text, skipping", entry.Name)
 	}
 
-	parsedText := ParseText(text)
+	parsedText, err := ParseText(text)
+	if err != nil {
+		logger.Errorf("error for %s: %v", filename, err)
+		return fmt.Errorf("error for %s: %v", filename, err)
+	}
+
 	if parsedText.MetaData.Title != "" {
 		title = parsedText.MetaData.Title
 	}
@@ -89,6 +95,7 @@ func (h *DbHandler) Write(s ssh.Session, entry *utils.FileEntry) error {
 		err := h.DBPool.RemovePosts([]string{post.ID})
 		logger.Infof("(%s) is empty, removing record", filename)
 		if err != nil {
+			logger.Errorf("error for %s: %v", filename, err)
 			return fmt.Errorf("error for %s: %v", filename, err)
 		}
 	} else if post == nil {
@@ -99,6 +106,7 @@ func (h *DbHandler) Write(s ssh.Session, entry *utils.FileEntry) error {
 		logger.Infof("(%s) not found, adding record", filename)
 		_, err = h.DBPool.InsertPost(userID, filename, title, text, description, &publishAt)
 		if err != nil {
+			logger.Errorf("error for %s: %v", filename, err)
 			return fmt.Errorf("error for %s: %v", filename, err)
 		}
 	} else {
@@ -114,6 +122,7 @@ func (h *DbHandler) Write(s ssh.Session, entry *utils.FileEntry) error {
 		logger.Infof("(%s) found, updating record", filename)
 		_, err = h.DBPool.UpdatePost(post.ID, title, text, description, publishAt)
 		if err != nil {
+			logger.Errorf("error for %s: %v", filename, err)
 			return fmt.Errorf("error for %s: %v", filename, err)
 		}
 	}

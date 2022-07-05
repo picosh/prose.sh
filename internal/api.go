@@ -174,7 +174,10 @@ func blogHandler(w http.ResponseWriter, r *http.Request) {
 	postCollection := make([]PostItemData, 0, len(posts))
 	for _, post := range posts {
 		if post.Filename == "_readme" {
-			parsedText := ParseText(post.Text)
+			parsedText, err := ParseText(post.Text)
+			if err != nil {
+				logger.Error(err)
+			}
 			headerTxt.Bio = parsedText.Description
 			if parsedText.Title != "" {
 				headerTxt.Title = parsedText.Title
@@ -259,7 +262,10 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	parsedText := ParseText(post.Text)
+	parsedText, err := ParseText(post.Text)
+	if err != nil {
+		logger.Error(err)
+	}
 
 	data := PostPageData{
 		Site:         *cfg.GetSiteData(),
@@ -414,7 +420,10 @@ func rssBlogHandler(w http.ResponseWriter, r *http.Request) {
 
 	for _, post := range posts {
 		if post.Filename == "_readme" {
-			parsedText := ParseText(post.Text)
+			parsedText, err := ParseText(post.Text)
+			if err != nil {
+				logger.Error(err)
+			}
 			if parsedText.Title != "" {
 				headerTxt.Title = parsedText.Title
 			}
@@ -437,7 +446,10 @@ func rssBlogHandler(w http.ResponseWriter, r *http.Request) {
 
 	var feedItems []*feeds.Item
 	for _, post := range posts {
-		parsed := ParseText(post.Text)
+		parsed, err := ParseText(post.Text)
+		if err != nil {
+			logger.Error(err)
+		}
 		var tpl bytes.Buffer
 		data := &PostPageData{
 			Contents: template.HTML(parsed.Html),
@@ -504,7 +516,11 @@ func rssHandler(w http.ResponseWriter, r *http.Request) {
 
 	var feedItems []*feeds.Item
 	for _, post := range pager.Data {
-		parsed := ParseText(post.Text)
+		parsed, err := ParseText(post.Text)
+		if err != nil {
+			logger.Error(err)
+		}
+
 		var tpl bytes.Buffer
 		data := &PostPageData{
 			Contents: template.HTML(parsed.Html),

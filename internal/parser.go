@@ -2,6 +2,7 @@ package internal
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"time"
 
@@ -32,24 +33,28 @@ func toString(obj interface{}) string {
 	return obj.(string)
 }
 
-func toLinks(obj interface{}) []Link {
+func toLinks(obj interface{}) ([]Link, error) {
 	links := []Link{}
 	if obj == nil {
-		return links
+		return links, nil
 	}
 
-	raw := obj.(map[interface{}]interface{})
-	for k, v := range raw {
-		links = append(links, Link{
-			Text: k.(string),
-			URL:  v.(string),
-		})
+	switch raw := obj.(type) {
+	case map[interface{}]interface{}:
+		for k, v := range raw {
+			links = append(links, Link{
+				Text: k.(string),
+				URL:  v.(string),
+			})
+		}
+	default:
+		return links, errors.New(fmt.Sprintf("unsupported type for `nav` variable: %T", raw))
 	}
 
-	return links
+	return links, nil
 }
 
-func ParseText(text string) *ParsedText {
+func ParseText(text string) (*ParsedText, error) {
 	var buf bytes.Buffer
 	hili := highlighting.NewHighlighting(
 		highlighting.WithStyle("dracula"),
@@ -66,8 +71,7 @@ func ParseText(text string) *ParsedText {
 	)
 	context := parser.NewContext()
 	if err := md.Convert([]byte(text), &buf, parser.WithContext(context)); err != nil {
-		fmt.Println(err)
-		return &ParsedText{}
+		return &ParsedText{}, err
 	}
 	metaData := meta.Get(context)
 
@@ -77,11 +81,14 @@ func ParseText(text string) *ParsedText {
 	if date != "" {
 		publishAt, err = time.Parse("2006-01-02", date)
 		if err != nil {
-			fmt.Println(err)
+			return &ParsedText{}, err
 		}
 	}
 
-	nav := toLinks(metaData["nav"])
+	nav, err := toLinks(metaData["nav"])
+	if err != nil {
+		return &ParsedText{}, err
+	}
 
 	return &ParsedText{
 		Html: buf.String(),
@@ -91,5 +98,5 @@ func ParseText(text string) *ParsedText {
 			Description: toString(metaData["description"]),
 			Nav:         nav,
 		},
-	}
+	}, nil
 }
