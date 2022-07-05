@@ -330,7 +330,7 @@ func readHandler(w http.ResponseWriter, r *http.Request) {
 	cfg := GetCfg(r)
 
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
-	pager, err := dbpool.FindAllUpdatedPosts(&db.Pager{Num: 30, Page: page})
+	pager, err := dbpool.FindAllPosts(&db.Pager{Num: 30, Page: page})
 	if err != nil {
 		logger.Error(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
