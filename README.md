@@ -1,6 +1,6 @@
 # prose.sh
 
-A smol blog platform.
+A blog platform for hackers.
 
 ## comms
 

@@ -44,7 +44,7 @@ func NewConfigSite() *ConfigSite {
 			Domain:      domain,
 			Email:       email,
 			DbURL:       dbURL,
-			Description: "A smol blog platform.",
+			Description: "a blog platform for hackers.",
 			IntroText:   intro,
 			Logger:      CreateLogger(),
 		},

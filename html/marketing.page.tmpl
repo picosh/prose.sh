@@ -1,9 +1,9 @@
 {{template "base" .}}
 
-{{define "title"}}{{.Site.Domain}} -- a smol blog platform{{end}}
+{{define "title"}}{{.Site.Domain}} -- a blog platform for hackers{{end}}
 
 {{define "meta"}}
-<meta name="description" content="a smol blog platform" />
+<meta name="description" content="a blog platform for hackers" />
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{{.Site.Domain}}">
@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:url" content="https://{{.Site.Domain}}">
 <meta property="twitter:title" content="{{.Site.Domain}}">
-<meta property="twitter:description" content="a smol blog platform">
+<meta property="twitter:description" content="a blog platform for hackers">
 <meta name="twitter:image" content="https://{{.Site.Domain}}/card.png" />
 <meta name="twitter:image:src" content="https://{{.Site.Domain}}/card.png" />
 
@@ -27,7 +27,7 @@
 {{define "body"}}
 <header class="text-center">
     <h1 class="text-2xl font-bold">{{.Site.Domain}}</h1>
-    <p class="text-lg">A smol blog platform</p>
+    <p class="text-lg">a blog platform for hackers</p>
     <p class="text-lg"><a href="/read">discover</a> some interesting posts</p>
     <hr />
 </header>
@@ -117,10 +117,9 @@ Cya!
     <section>
         <h2 class="text-lg font-bold">Philosophy</h2>
         <p>
-            The goal of this blogging platform is to make it
-            simple to use the tools you love to write and publish your thoughts.  There is no installation,
-            signup is as easy as SSH'ing into our CMS, and publishing content is as easy as
-            copying files to our server.
+            The goal of this blogging platform is to make it simple to use the tools you love to
+            write and publish your thoughts.  There is no installation, signup is as easy as SSH'ing
+            into our CMS, and publishing content is as easy as copying files to our server.
         </p>
 
         <p>
@@ -132,6 +131,7 @@ Cya!
         <h2 class="text-lg font-bold">Roadmap</h2>
         <ol>
             <li>Ability to upload images</li>
+            <li>Compatibility with <a href="https://gohugo.io">hugo</a></li>
         </ol>
     </section>
 </main>
