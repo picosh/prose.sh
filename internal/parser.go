@@ -74,7 +74,7 @@ func ParseText(text string) (*ParsedText, error) {
 	}
 	metaData := meta.Get(context)
 
-	publishAt := time.Now()
+	var publishAt time.Time
 	var err error
 	date := toString(metaData["date"])
 	if date != "" {
