@@ -43,7 +43,7 @@ second-post.md
 third-post.md</pre>
         </p>
         <p>
-            Underscores and hyphens are permitted and will be automatically removed from the title of the list.
+            Underscores and hyphens are permitted and will be automatically removed from the title of the post.
         </p>
     </section>
 
@@ -61,22 +61,22 @@ date: 2022-06-28
             List of available variables:
             <ul>
                 <li>title (custom title not dependent on filename)</li>
-                <li>description (what is the purpose of this list?)</li>
+                <li>description (what is the purpose of this post?  It's also added to meta tag)</li>
                 <li>date (format must be YYYY-MM-DD)</li>
             </ul>
         </p>
     </section>
 
     <section id="blog-update">
-        <h2 class="text-xl">How do I update a list?</h2>
+        <h2 class="text-xl">How do I update a post?</h2>
         <p>
-            Updating a list requires that you update the source document and then run the <code>scp</code>
-            command again.  If the filename remains the same, then the list will be updated.
+            Updating a post requires that you update the source document and then run the <code>scp</code>
+            command again.  If the filename remains the same, then the post will be updated.
         </p>
     </section>
 
     <section id="blog-delete">
-        <h2 class="text-xl">How do I delete a list?</h2>
+        <h2 class="text-xl">How do I delete a post?</h2>
         <p>
             Because <code>scp</code> does not natively support deleting files, I didn't want to bake
             that behavior into my ssh server.
@@ -95,7 +95,7 @@ scp ./delete.md {{.Site.Domain}}:/</pre>
         <p>
             Alternatively, you can go to <code>ssh {{.Site.Domain}}</code> and select "Manage posts."
             Then you can highlight the post you want to delete and then press "X."  It will ask for
-            confirmation before actually removing the list.
+            confirmation before actually removing the post.
         </p>
     </section>
 

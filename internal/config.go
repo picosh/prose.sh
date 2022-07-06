@@ -34,8 +34,8 @@ func NewConfigSite() *ConfigSite {
 
 	intro := "To get started, enter a username.\n"
 	intro += "Then create a folder locally (e.g. ~/blog).\n"
-	intro += "Then write your lists in markdown files (e.g. hello-world.md).\n"
-	intro += "Finally, send your list files to us:\n\n"
+	intro += "Then write your post in markdown files (e.g. hello-world.md).\n"
+	intro += "Finally, send your files to us:\n\n"
 	intro += fmt.Sprintf("scp ~/blog/*.md %s:/", domain)
 
 	return &ConfigSite{
