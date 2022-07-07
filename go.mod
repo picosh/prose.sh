@@ -3,7 +3,7 @@ module git.sr.ht/~erock/prose.sh
 go 1.18
 
 require (
-	git.sr.ht/~erock/wish v0.0.0-20220706032104-46c62b17c3fc
+	git.sr.ht/~erock/wish v0.0.0-20220707194507-66e938674d95
 	github.com/alecthomas/chroma v0.10.0
 	github.com/charmbracelet/wish v0.5.0
 	github.com/gliderlabs/ssh v0.3.4
