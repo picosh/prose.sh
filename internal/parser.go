@@ -38,13 +38,21 @@ func toLinks(obj interface{}) ([]Link, error) {
 		return links, nil
 	}
 
-	switch raw := obj.(type) {
-	case map[interface{}]interface{}:
+	addLinks := func(raw map[interface{}]interface{}) {
 		for k, v := range raw {
 			links = append(links, Link{
 				Text: k.(string),
 				URL:  v.(string),
 			})
+		}
+	}
+
+	switch raw := obj.(type) {
+	case map[interface{}]interface{}:
+		addLinks(raw)
+	case []interface{}:
+		for _, v := range raw {
+			addLinks(v.(map[interface{}]interface{}))
 		}
 	default:
 		return links, fmt.Errorf("unsupported type for `nav` variable: %T", raw)
