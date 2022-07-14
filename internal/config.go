@@ -26,6 +26,8 @@ func NewConfigSite() *ConfigSite {
 	domain := GetEnv("PROSE_DOMAIN", "prose.sh")
 	email := GetEnv("PROSE_EMAIL", "hello@prose.sh")
 	subdomains := GetEnv("PROSE_SUBDOMAINS", "0")
+	port := GetEnv("PROSE_PORT", "3000")
+	protocol := GetEnv("PROSE_PROTOCOL", "https")
 	dbURL := GetEnv("DATABASE_URL", "")
 	subdomainsEnabled := false
 	if subdomains == "1" {
@@ -43,6 +45,8 @@ func NewConfigSite() *ConfigSite {
 		ConfigCms: config.ConfigCms{
 			Domain:      domain,
 			Email:       email,
+			Port:        port,
+			Protocol:    protocol,
 			DbURL:       dbURL,
 			Description: "a blog platform for hackers.",
 			IntroText:   intro,

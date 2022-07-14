@@ -23,6 +23,7 @@ export PROSE_SSH_PORT=2222
 export PROSE_WEB_PORT=3000
 export PROSE_DOMAIN="prose.sh"
 export PROSE_EMAIL="hello@prose.sh"
+export PROSE_PROTOCOL="http"
 ```
 
 I just use `direnv` which will load my `.env` file.
