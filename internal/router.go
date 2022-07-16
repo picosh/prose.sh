@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"net"
 	"net/http"
 	"regexp"
 	"strings"
@@ -9,6 +10,8 @@ import (
 	"git.sr.ht/~erock/wish/cms/db"
 	"go.uber.org/zap"
 )
+
+const proseDNSPrefix = "prose="
 
 type Route struct {
 	method  string
@@ -29,11 +32,24 @@ type ServeFn func(http.ResponseWriter, *http.Request)
 func CreateServe(routes []Route, subdomainRoutes []Route, cfg *ConfigSite, dbpool db.DB, logger *zap.SugaredLogger) ServeFn {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var allow []string
+		var subdomain string
 		curRoutes := routes
-		subdomain := GetRequestSubdomain(r)
 
-		if cfg.IsSubdomains() && subdomain != "" {
-			curRoutes = subdomainRoutes
+		if cfg.IsCustomdomains() || cfg.IsSubdomains() {
+			hostDomain := strings.Split(r.Host, ":")[0]
+			appDomain := strings.Split(cfg.ConfigCms.Domain, ":")[0]
+
+			if strings.Contains(hostDomain, appDomain) {
+				subdomain = GetRequestSubdomain(r)
+				if subdomain != "" {
+					curRoutes = subdomainRoutes
+				}
+			} else {
+				subdomain = GetCustomDomain(hostDomain)
+				if subdomain != "" {
+					curRoutes = subdomainRoutes
+				}
+			}
 		}
 
 		for _, route := range curRoutes {
@@ -120,4 +136,19 @@ func GetRequestSubdomain(r *http.Request) string {
 	}
 
 	return "" // scenario A
+}
+
+func GetCustomDomain(host string) string {
+	records, err := net.LookupTXT(host)
+	if err != nil {
+		return ""
+	}
+
+	for _, v := range records {
+		if strings.HasPrefix(v, proseDNSPrefix) {
+			return strings.TrimSpace(strings.TrimPrefix(v, proseDNSPrefix))
+		}
+	}
+
+	return ""
 }

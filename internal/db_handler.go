@@ -121,7 +121,7 @@ func (h *DbHandler) Write(s ssh.Session, entry *utils.FileEntry) (string, error)
 		}
 		if text == post.Text {
 			logger.Infof("(%s) found, but text is identical, skipping", filename)
-			return h.Cfg.PostURL(user.Name, filename), nil
+			return h.Cfg.FullPostURL(user.Name, filename, h.Cfg.IsSubdomains(), true), nil
 		}
 
 		logger.Infof("(%s) found, updating record", filename)
@@ -132,5 +132,5 @@ func (h *DbHandler) Write(s ssh.Session, entry *utils.FileEntry) (string, error)
 		}
 	}
 
-	return h.Cfg.PostURL(user.Name, filename), nil
+	return h.Cfg.FullPostURL(user.Name, filename, h.Cfg.IsSubdomains(), true), nil
 }

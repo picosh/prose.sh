@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"git.sr.ht/~erock/wish/cms/db"
@@ -155,6 +156,12 @@ func blogHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	hostDomain := strings.Split(r.Host, ":")[0]
+	appDomain := strings.Split(cfg.ConfigCms.Domain, ":")[0]
+
+	onSubdomain := cfg.IsSubdomains() && strings.Contains(hostDomain, appDomain)
+	withUserName := (!onSubdomain && hostDomain == appDomain) || !cfg.IsCustomdomains()
+
 	ts, err := renderTemplate([]string{
 		"./html/blog.page.tmpl",
 	})
@@ -189,8 +196,8 @@ func blogHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		} else {
 			p := PostItemData{
-				URL:            template.URL(cfg.PostURL(post.Username, post.Filename)),
-				BlogURL:        template.URL(cfg.BlogURL(post.Username)),
+				URL:            template.URL(cfg.FullPostURL(post.Username, post.Filename, onSubdomain, withUserName)),
+				BlogURL:        template.URL(cfg.FullBlogURL(post.Username, onSubdomain, withUserName)),
 				Title:          FilenameToTitle(post.Filename, post.Title),
 				PublishAt:      post.PublishAt.Format("02 Jan, 2006"),
 				PublishAtISO:   post.PublishAt.Format(time.RFC3339),
@@ -204,8 +211,8 @@ func blogHandler(w http.ResponseWriter, r *http.Request) {
 	data := BlogPageData{
 		Site:      *cfg.GetSiteData(),
 		PageTitle: headerTxt.Title,
-		URL:       template.URL(cfg.BlogURL(username)),
-		RSSURL:    template.URL(cfg.RssBlogURL(username)),
+		URL:       template.URL(cfg.FullBlogURL(username, onSubdomain, withUserName)),
+		RSSURL:    template.URL(cfg.RssBlogURL(username, onSubdomain, withUserName)),
 		Readme:    readmeTxt,
 		Header:    headerTxt,
 		Username:  username,
@@ -267,11 +274,17 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 		logger.Error(err)
 	}
 
+	hostDomain := strings.Split(r.Host, ":")[0]
+	appDomain := strings.Split(cfg.ConfigCms.Domain, ":")[0]
+
+	onSubdomain := cfg.IsSubdomains() && strings.Contains(hostDomain, appDomain)
+	withUserName := (!onSubdomain && hostDomain == appDomain) || !cfg.IsCustomdomains()
+
 	data := PostPageData{
 		Site:         *cfg.GetSiteData(),
 		PageTitle:    GetPostTitle(post),
-		URL:          template.URL(cfg.PostURL(post.Username, post.Filename)),
-		BlogURL:      template.URL(cfg.BlogURL(username)),
+		URL:          template.URL(cfg.FullPostURL(post.Username, post.Filename, onSubdomain, withUserName)),
+		BlogURL:      template.URL(cfg.FullBlogURL(username, onSubdomain, withUserName)),
 		Description:  post.Description,
 		Title:        FilenameToTitle(post.Filename, post.Title),
 		PublishAt:    post.PublishAt.Format("02 Jan, 2006"),
@@ -330,6 +343,29 @@ func transparencyHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func checkHandler(w http.ResponseWriter, r *http.Request) {
+	dbpool := GetDB(r)
+	cfg := GetCfg(r)
+
+	if cfg.IsCustomdomains() {
+		hostDomain := r.URL.Query().Get("domain")
+		appDomain := strings.Split(cfg.ConfigCms.Domain, ":")[0]
+
+		if !strings.Contains(hostDomain, appDomain) {
+			subdomain := GetCustomDomain(hostDomain)
+			if subdomain != "" {
+				u, err := dbpool.FindUserForName(subdomain)
+				if u != nil && err == nil {
+					w.WriteHeader(http.StatusOK)
+					return
+				}
+			}
+		}
+	}
+
+	w.WriteHeader(http.StatusNotFound)
+}
+
 func readHandler(w http.ResponseWriter, r *http.Request) {
 	dbpool := GetDB(r)
 	logger := GetLogger(r)
@@ -368,8 +404,8 @@ func readHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	for _, post := range pager.Data {
 		item := PostItemData{
-			URL:            template.URL(cfg.PostURL(post.Username, post.Filename)),
-			BlogURL:        template.URL(cfg.BlogURL(post.Username)),
+			URL:            template.URL(cfg.FullPostURL(post.Username, post.Filename, true, true)),
+			BlogURL:        template.URL(cfg.FullBlogURL(post.Username, true, true)),
 			Title:          FilenameToTitle(post.Filename, post.Title),
 			Description:    post.Description,
 			Username:       post.Username,
@@ -436,9 +472,15 @@ func rssBlogHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	hostDomain := strings.Split(r.Host, ":")[0]
+	appDomain := strings.Split(cfg.ConfigCms.Domain, ":")[0]
+
+	onSubdomain := cfg.IsSubdomains() && strings.Contains(hostDomain, appDomain)
+	withUserName := (!onSubdomain && hostDomain == appDomain) || !cfg.IsCustomdomains()
+
 	feed := &feeds.Feed{
 		Title:       headerTxt.Title,
-		Link:        &feeds.Link{Href: cfg.BlogURL(username)},
+		Link:        &feeds.Link{Href: cfg.FullBlogURL(username, onSubdomain, withUserName)},
 		Description: headerTxt.Bio,
 		Author:      &feeds.Author{Name: username},
 		Created:     time.Now(),
@@ -458,10 +500,15 @@ func rssBlogHandler(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		realUrl := cfg.FullPostURL(post.Username, post.Filename, onSubdomain, withUserName)
+		if !onSubdomain && !withUserName {
+			realUrl = fmt.Sprintf("%s://%s%s", cfg.Protocol, r.Host, realUrl)
+		}
+
 		item := &feeds.Item{
-			Id:      cfg.PostURL(post.Username, post.Filename),
+			Id:      realUrl,
 			Title:   post.Title,
-			Link:    &feeds.Link{Href: cfg.PostURL(post.Username, post.Filename)},
+			Link:    &feeds.Link{Href: realUrl},
 			Content: tpl.String(),
 			Created: *post.PublishAt,
 		}
@@ -514,6 +561,12 @@ func rssHandler(w http.ResponseWriter, r *http.Request) {
 		Created:     time.Now(),
 	}
 
+	hostDomain := strings.Split(r.Host, ":")[0]
+	appDomain := strings.Split(cfg.ConfigCms.Domain, ":")[0]
+
+	onSubdomain := cfg.IsSubdomains() && strings.Contains(hostDomain, appDomain)
+	withUserName := (!onSubdomain && hostDomain == appDomain) || !cfg.IsCustomdomains()
+
 	var feedItems []*feeds.Item
 	for _, post := range pager.Data {
 		parsed, err := ParseText(post.Text)
@@ -529,10 +582,15 @@ func rssHandler(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		realUrl := cfg.FullPostURL(post.Username, post.Filename, onSubdomain, withUserName)
+		if !onSubdomain && !withUserName {
+			realUrl = fmt.Sprintf("%s://%s%s", cfg.Protocol, r.Host, realUrl)
+		}
+
 		item := &feeds.Item{
-			Id:      cfg.PostURL(post.Username, post.Filename),
+			Id:      realUrl,
 			Title:   post.Title,
-			Link:    &feeds.Link{Href: cfg.PostURL(post.Username, post.Filename)},
+			Link:    &feeds.Link{Href: realUrl},
 			Content: tpl.String(),
 			Created: *post.PublishAt,
 		}
@@ -598,6 +656,7 @@ func createMainRoutes(staticRoutes []Route) []Route {
 		NewRoute("GET", "/help", createPageHandler("./html/help.page.tmpl")),
 		NewRoute("GET", "/transparency", transparencyHandler),
 		NewRoute("GET", "/read", readHandler),
+		NewRoute("GET", "/check", checkHandler),
 	}
 
 	routes = append(

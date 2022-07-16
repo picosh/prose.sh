@@ -19,19 +19,26 @@ type SitePageData struct {
 type ConfigSite struct {
 	config.ConfigCms
 	config.ConfigURL
-	SubdomainsEnabled bool
+	SubdomainsEnabled    bool
+	CustomdomainsEnabled bool
 }
 
 func NewConfigSite() *ConfigSite {
 	domain := GetEnv("PROSE_DOMAIN", "prose.sh")
 	email := GetEnv("PROSE_EMAIL", "hello@prose.sh")
 	subdomains := GetEnv("PROSE_SUBDOMAINS", "0")
+	customdomains := GetEnv("PROSE_CUSTOMDOMAINS", "0")
 	port := GetEnv("PROSE_WEB_PORT", "3000")
 	protocol := GetEnv("PROSE_PROTOCOL", "https")
 	dbURL := GetEnv("DATABASE_URL", "")
 	subdomainsEnabled := false
 	if subdomains == "1" {
 		subdomainsEnabled = true
+	}
+
+	customdomainsEnabled := false
+	if customdomains == "1" {
+		customdomainsEnabled = true
 	}
 
 	intro := "To get started, enter a username.\n"
@@ -41,7 +48,8 @@ func NewConfigSite() *ConfigSite {
 	intro += fmt.Sprintf("scp ~/blog/*.md %s:/", domain)
 
 	return &ConfigSite{
-		SubdomainsEnabled: subdomainsEnabled,
+		SubdomainsEnabled:    subdomainsEnabled,
+		CustomdomainsEnabled: customdomainsEnabled,
 		ConfigCms: config.ConfigCms{
 			Domain:      domain,
 			Email:       email,
@@ -71,6 +79,18 @@ func (c *ConfigSite) BlogURL(username string) string {
 	return fmt.Sprintf("/%s", username)
 }
 
+func (c *ConfigSite) FullBlogURL(username string, onSubdomain bool, withUserName bool) string {
+	if c.IsSubdomains() && onSubdomain {
+		return fmt.Sprintf("%s://%s.%s", c.Protocol, username, c.Domain)
+	}
+
+	if withUserName {
+		return fmt.Sprintf("/%s", username)
+	}
+
+	return "/"
+}
+
 func (c *ConfigSite) PostURL(username, filename string) string {
 	fname := url.PathEscape(filename)
 	if c.IsSubdomains() {
@@ -78,22 +98,44 @@ func (c *ConfigSite) PostURL(username, filename string) string {
 	}
 
 	return fmt.Sprintf("/%s/%s", username, fname)
+
+}
+
+func (c *ConfigSite) FullPostURL(username, filename string, onSubdomain bool, withUserName bool) string {
+	fname := url.PathEscape(filename)
+	if c.IsSubdomains() && onSubdomain {
+		return fmt.Sprintf("%s://%s.%s/%s", c.Protocol, username, c.Domain, fname)
+	}
+
+	if withUserName {
+		return fmt.Sprintf("/%s/%s", username, fname)
+	}
+
+	return fmt.Sprintf("/%s", fname)
 }
 
 func (c *ConfigSite) IsSubdomains() bool {
 	return c.SubdomainsEnabled
 }
 
-func (c *ConfigSite) RssBlogURL(username string) string {
-	if c.IsSubdomains() {
+func (c *ConfigSite) IsCustomdomains() bool {
+	return c.CustomdomainsEnabled
+}
+
+func (c *ConfigSite) RssBlogURL(username string, onSubdomain bool, withUserName bool) string {
+	if c.IsSubdomains() && onSubdomain {
 		return fmt.Sprintf("%s://%s.%s/rss", c.Protocol, username, c.Domain)
 	}
 
-	return fmt.Sprintf("/%s/rss", username)
+	if withUserName {
+		return fmt.Sprintf("/%s/rss", username)
+	}
+
+	return "/rss"
 }
 
 func (c *ConfigSite) HomeURL() string {
-	if c.IsSubdomains() {
+	if c.IsSubdomains() || c.IsCustomdomains() {
 		return fmt.Sprintf("//%s", c.Domain)
 	}
 
@@ -101,7 +143,7 @@ func (c *ConfigSite) HomeURL() string {
 }
 
 func (c *ConfigSite) ReadURL() string {
-	if c.IsSubdomains() {
+	if c.IsSubdomains() || c.IsCustomdomains() {
 		return fmt.Sprintf("%s://%s/read", c.Protocol, c.Domain)
 	}
 
