@@ -89,6 +89,25 @@ Cya!
     </section>
 
     <section>
+        <h2 class="text-lg font-bold">Setup a custom domain</h2>
+        <p>
+            A blog can be accessed from a custom domain.
+            HTTPS will be automatically enabled and a certificate will be retrieved
+            from <a href="https://letsencrypt.org/">Let's Encrypt</a>. In order for this to work,
+            2 DNS records need to be created:
+        </p>
+
+        <p>CNAME for the domain to prose</p>
+        <pre>CNAME yourcustomdomain.com -> prose.sh</pre>
+        <p>Resulting in:</p>
+        <pre>yourcustomdomain.com.         300     IN      CNAME   prose.sh.</pre>
+        <p>And a TXT record to tell Prose what blog is hosted on that domain</p>
+        <pre>TXT yourcustomdomain.com -> prose=yourproseusername</pre>
+        <p>Resulting in:</p>
+        <pre>yourcustomdomain.com.         300     IN      TXT     "prose=hey"</pre>
+    </section>
+
+    <section>
         <h2 class="text-lg font-bold">Terminal workflow without installation</h2>
         <p>
             Since we are leveraging tools you already have on your computer
@@ -134,7 +153,6 @@ Cya!
         <h2 class="text-lg font-bold">Roadmap</h2>
         <ol>
             <li>Ability to upload images</li>
-            <li>Custom domains</li>
             <li>Limited compatibility with <a href="https://gohugo.io">hugo</a></li>
         </ol>
     </section>
