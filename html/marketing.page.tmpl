@@ -101,10 +101,10 @@ Cya!
         <pre>CNAME subdomain.yourcustomdomain.com -> prose.sh</pre>
         <p>Resulting in:</p>
         <pre>subdomain.yourcustomdomain.com.         300     IN      CNAME   prose.sh.</pre>
-        <p>And a TXT record to tell Prose what blog is hosted on that domain</p>
-        <pre>TXT subdomain.yourcustomdomain.com -> prose=yourproseusername</pre>
+        <p>And a TXT record to tell Prose what blog is hosted on that domain at the subdomain entry _prose</p>
+        <pre>TXT _prose.subdomain.yourcustomdomain.com -> yourproseusername</pre>
         <p>Resulting in:</p>
-        <pre>subdomain.yourcustomdomain.com.         300     IN      TXT     "prose=hey"</pre>
+        <pre>_prose.subdomain.yourcustomdomain.com.         300     IN      TXT     "hey"</pre>
     </section>
 
     <section>

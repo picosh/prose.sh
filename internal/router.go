@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"net/http"
 	"regexp"
@@ -10,8 +11,6 @@ import (
 	"git.sr.ht/~erock/wish/cms/db"
 	"go.uber.org/zap"
 )
-
-const proseDNSPrefix = "prose="
 
 type Route struct {
 	method  string
@@ -139,15 +138,13 @@ func GetRequestSubdomain(r *http.Request) string {
 }
 
 func GetCustomDomain(host string) string {
-	records, err := net.LookupTXT(host)
+	records, err := net.LookupTXT(fmt.Sprintf("_prose.%s", host))
 	if err != nil {
 		return ""
 	}
 
 	for _, v := range records {
-		if strings.HasPrefix(v, proseDNSPrefix) {
-			return strings.TrimSpace(strings.TrimPrefix(v, proseDNSPrefix))
-		}
+		return strings.TrimSpace(v)
 	}
 
 	return ""
