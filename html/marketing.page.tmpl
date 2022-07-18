@@ -89,25 +89,6 @@ Cya!
     </section>
 
     <section>
-        <h2 class="text-lg font-bold">Setup a custom domain</h2>
-        <p>
-            A blog can be accessed from a custom domain.
-            HTTPS will be automatically enabled and a certificate will be retrieved
-            from <a href="https://letsencrypt.org/">Let's Encrypt</a>. In order for this to work,
-            2 DNS records need to be created:
-        </p>
-
-        <p>CNAME for the domain to prose (subdomains or DNS hosting with CNAME flattening) or A record</p>
-        <pre>CNAME subdomain.yourcustomdomain.com -> prose.sh</pre>
-        <p>Resulting in:</p>
-        <pre>subdomain.yourcustomdomain.com.         300     IN      CNAME   prose.sh.</pre>
-        <p>And a TXT record to tell Prose what blog is hosted on that domain at the subdomain entry _prose</p>
-        <pre>TXT _prose.subdomain.yourcustomdomain.com -> yourproseusername</pre>
-        <p>Resulting in:</p>
-        <pre>_prose.subdomain.yourcustomdomain.com.         300     IN      TXT     "hey"</pre>
-    </section>
-
-    <section>
         <h2 class="text-lg font-bold">Terminal workflow without installation</h2>
         <p>
             Since we are leveraging tools you already have on your computer
@@ -122,6 +103,7 @@ Cya!
         <h2 class="text-lg font-bold">Features</h2>
         <ul>
             <li>Github flavor markdown</li>
+            <li><a href="/help#custom–domain">Custom domains</a></li>
             <li>Looks great on any device</li>
             <li>Bring your own editor</li>
             <li>You control the source files</li>
