@@ -13,7 +13,10 @@
 </header>
 <main>
     <section id="permission-denied">
-        <h2 class="text-xl">I get a permission denied when trying to SSH</h2>
+        <h2 class="text-xl">
+            <a href="#permission-denied" rel="nofollow noopener">#</a>
+            I get a permission denied when trying to SSH
+        </h2>
         <p>
             Unfortunately SHA-2 RSA keys are <strong>not</strong> currently supported.
         </p>
@@ -34,7 +37,10 @@
     </section>
 
     <section id="blog-ssh-key">
-        <h2 class="text-xl">Generating a new SSH key</h2>
+        <h2 class="text-xl">
+            <a href="#blog-ssh-key" rel="nofollow noopener">#</a>
+            Generating a new SSH key
+        </h2>
         <p>
             <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Github reference</a>
         </p>
@@ -46,7 +52,10 @@
     </section>
 
     <section id="blog-structure">
-        <h2 class="text-xl">What should my blog folder look like?</h2>
+        <h2 class="text-xl">
+            <a href="#blog-structure" rel="nofollow noopener">#</a>
+            What should my blog folder look like?
+        </h2>
         <p>
             Currently {{.Site.Domain}} only supports a flat folder structure.  Therefore,
             <code>scp -r</code> is not permitted.  We also only allow <code>.md</code> files to be
@@ -68,8 +77,11 @@ third-post.md</pre>
         </p>
     </section>
 
-    <section id="blog-metadata">
-        <h2 class="text-xl">How do I update metadata like publish date and title?</h2>
+    <section id="post-metadata">
+        <h2 class="text-xl">
+            <a href="#post-metadata" rel="nofollow noopener">#</a>
+            How do I update metadata like publish date and title?
+        </h2>
         <p>
         We support adding frontmatter to the top of your markdown posts.  A frontmatter looks like the following:
         <pre>---
@@ -88,16 +100,22 @@ date: 2022-06-28
         </p>
     </section>
 
-    <section id="blog-update">
-        <h2 class="text-xl">How do I update a post?</h2>
+    <section id="post-update">
+        <h2 class="text-xl">
+            <a href="#post-update" rel="nofollow noopener">#</a>
+            How do I update a post?
+        </h2>
         <p>
             Updating a post requires that you update the source document and then run the <code>scp</code>
             command again.  If the filename remains the same, then the post will be updated.
         </p>
     </section>
 
-    <section id="blog-delete">
-        <h2 class="text-xl">How do I delete a post?</h2>
+    <section id="post-delete">
+        <h2 class="text-xl">
+            <a href="#post-delete" rel="nofollow noopener">#</a>
+            How do I delete a post?
+        </h2>
         <p>
             Because <code>scp</code> does not natively support deleting files, I didn't want to bake
             that behavior into my ssh server.
@@ -121,7 +139,10 @@ scp ./delete.md {{.Site.Domain}}:/</pre>
     </section>
 
     <section id="blog-upload-single-file">
-        <h2 class="text-xl">When I want to publish a new post, do I have to upload all posts everytime?</h2>
+        <h2 class="text-xl">
+            <a href="#blog-upload-single-file" rel="nofollow noopener">#</a>
+            When I want to publish a new post, do I have to upload all posts everytime?
+        </h2>
         <p>
             Nope!  Just <code>scp</code> the file you want to publish.  For example, if you created
             a new post called <code>taco-tuesday.md</code> then you would publish it like this:
@@ -157,12 +178,18 @@ This will show up on the blog landing page.
     </section>
 
     <section id="blog-url">
-        <h2 class="text-xl">What is my blog URL?</h2>
+        <h2 class="text-xl">
+            <a href="#blog-url" rel="nofollow noopener">#</a>
+            What is my blog URL?
+        </h2>
         <pre>https://{username}.{{.Site.Domain}}</pre>
     </section>
 
     <section id="continuous-deployment">
-        <h2 class="text-xl">How can I automatically publish my post?</h2>
+        <h2 class="text-xl">
+            <a href="#continuous-deployment" rel="nofollow noopener">#</a>
+            How can I automatically publish my post?
+        </h2>
         <p>
             There is a github action that we built to make it easy to publish your blog automatically.
         </p>
@@ -180,7 +207,10 @@ This will show up on the blog landing page.
     </section>
 
     <section id="multiple-accounts">
-        <h2 class="text-xl">Can I create multiple accounts?</h2>
+        <h2 class="text-xl">
+            <a href="#multiple-accounts" rel="nofollow noopener">#</a>
+            Can I create multiple accounts?
+        </h2>
         <p>
            Yes!  You can either a) create a new keypair and use that for authentication
            or b) use the same keypair and ssh into our CMS using our special username
@@ -190,6 +220,28 @@ This will show up on the blog landing page.
             Please note that if you use the same keypair for multiple accounts, you will need to
             always specify the user when logging into our CMS.
         </p>
+    </section>
+
+    <section id="custom-domain">
+        <h2 class="text-xl">
+            <a href="#custom-domain" rel="nofollow noopener">#</a>
+            Setup a custom domain
+        </h2>
+        <p>
+            A blog can be accessed from a custom domain.
+            HTTPS will be automatically enabled and a certificate will be retrieved
+            from <a href="https://letsencrypt.org/">Let's Encrypt</a>. In order for this to work,
+            2 DNS records need to be created:
+        </p>
+
+        <p>CNAME for the domain to prose (subdomains or DNS hosting with CNAME flattening) or A record</p>
+        <pre>CNAME subdomain.yourcustomdomain.com -> prose.sh</pre>
+        <p>Resulting in:</p>
+        <pre>subdomain.yourcustomdomain.com.         300     IN      CNAME   prose.sh.</pre>
+        <p>And a TXT record to tell Prose what blog is hosted on that domain at the subdomain entry _prose</p>
+        <pre>TXT _prose.subdomain.yourcustomdomain.com -> yourproseusername</pre>
+        <p>Resulting in:</p>
+        <pre>_prose.subdomain.yourcustomdomain.com.         300     IN      TXT     "hey"</pre>
     </section>
 </main>
 {{template "marketing-footer" .}}
