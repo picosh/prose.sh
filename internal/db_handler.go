@@ -105,7 +105,7 @@ func (h *DbHandler) Write(s ssh.Session, entry *utils.FileEntry) (string, error)
 		}
 	} else if post == nil {
 		publishAt := time.Now()
-		if parsedText.MetaData.PublishAt != nil {
+		if parsedText.MetaData.PublishAt != nil && !parsedText.MetaData.PublishAt.IsZero() {
 			publishAt = *parsedText.MetaData.PublishAt
 		}
 		logger.Infof("(%s) not found, adding record", filename)

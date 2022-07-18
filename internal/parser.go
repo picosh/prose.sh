@@ -82,14 +82,15 @@ func ParseText(text string) (*ParsedText, error) {
 	}
 	metaData := meta.Get(context)
 
-	var publishAt time.Time
+	var publishAt *time.Time = nil
 	var err error
 	date := toString(metaData["date"])
 	if date != "" {
-		publishAt, err = time.Parse("2006-01-02", date)
+		nextDate, err := time.Parse("2006-01-02", date)
 		if err != nil {
 			return &ParsedText{}, err
 		}
+		publishAt = &nextDate
 	}
 
 	nav, err := toLinks(metaData["nav"])
@@ -100,7 +101,7 @@ func ParseText(text string) (*ParsedText, error) {
 	return &ParsedText{
 		Html: buf.String(),
 		MetaData: &MetaData{
-			PublishAt:   &publishAt,
+			PublishAt:   publishAt,
 			Title:       toString(metaData["title"]),
 			Description: toString(metaData["description"]),
 			Nav:         nav,
