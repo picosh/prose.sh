@@ -261,37 +261,47 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	blogName := GetBlogName(username)
-
-	post, err := dbpool.FindPostWithFilename(filename, user.ID)
-	if err != nil {
-		logger.Infof("post not found %s/%s", username, filename)
-		http.Error(w, "post not found", http.StatusNotFound)
-		return
-	}
-
-	parsedText, err := ParseText(post.Text)
-	if err != nil {
-		logger.Error(err)
-	}
-
 	hostDomain := strings.Split(r.Host, ":")[0]
 	appDomain := strings.Split(cfg.ConfigCms.Domain, ":")[0]
 
 	onSubdomain := cfg.IsSubdomains() && strings.Contains(hostDomain, appDomain)
 	withUserName := (!onSubdomain && hostDomain == appDomain) || !cfg.IsCustomdomains()
 
-	data := PostPageData{
-		Site:         *cfg.GetSiteData(),
-		PageTitle:    GetPostTitle(post),
-		URL:          template.URL(cfg.FullPostURL(post.Username, post.Filename, onSubdomain, withUserName)),
-		BlogURL:      template.URL(cfg.FullBlogURL(username, onSubdomain, withUserName)),
-		Description:  post.Description,
-		Title:        FilenameToTitle(post.Filename, post.Title),
-		PublishAt:    post.PublishAt.Format("02 Jan, 2006"),
-		PublishAtISO: post.PublishAt.Format(time.RFC3339),
-		Username:     username,
-		BlogName:     blogName,
-		Contents:     template.HTML(parsedText.Html),
+	var data PostPageData
+	post, err := dbpool.FindPostWithFilename(filename, user.ID)
+	if err == nil {
+		parsedText, err := ParseText(post.Text)
+		if err != nil {
+			logger.Error(err)
+		}
+
+		data = PostPageData{
+			Site:         *cfg.GetSiteData(),
+			PageTitle:    GetPostTitle(post),
+			URL:          template.URL(cfg.FullPostURL(post.Username, post.Filename, onSubdomain, withUserName)),
+			BlogURL:      template.URL(cfg.FullBlogURL(username, onSubdomain, withUserName)),
+			Description:  post.Description,
+			Title:        FilenameToTitle(post.Filename, post.Title),
+			PublishAt:    post.PublishAt.Format("02 Jan, 2006"),
+			PublishAtISO: post.PublishAt.Format(time.RFC3339),
+			Username:     username,
+			BlogName:     blogName,
+			Contents:     template.HTML(parsedText.Html),
+		}
+	} else {
+		data = PostPageData{
+			Site:         *cfg.GetSiteData(),
+			BlogURL:      template.URL(cfg.FullBlogURL(username, onSubdomain, withUserName)),
+			PageTitle:    "Post not found",
+			Description:  "Post not found",
+			Title:        "Post not found",
+			PublishAt:    time.Now().Format("02 Jan, 2006"),
+			PublishAtISO: time.Now().Format(time.RFC3339),
+			Username:     username,
+			BlogName:     blogName,
+			Contents:     "Oops!  we can't seem to find this post.",
+		}
+		logger.Infof("post not found %s/%s", username, filename)
 	}
 
 	ts, err := renderTemplate([]string{
