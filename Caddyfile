@@ -4,6 +4,14 @@
 		interval 1m
 		burst 10
 	}
+}
+
+*.prose.sh, prose.sh {
+	reverse_proxy web:3000
+	tls hello@prose.sh {
+		dns cloudflare {env.CF_API_TOKEN}
+	}
+	encode zstd gzip
 
     header {
         # disable FLoC tracking
@@ -21,15 +29,6 @@
         # keep referrer data off of HTTP connections
         Referrer-Policy no-referrer-when-downgrade
     }
-
-}
-
-*.prose.sh, prose.sh {
-	reverse_proxy web:3000
-	tls hello@prose.sh {
-		dns cloudflare {env.CF_API_TOKEN}
-	}
-	encode zstd gzip
 }
 
 :443 {
