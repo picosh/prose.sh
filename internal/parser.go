@@ -54,7 +54,12 @@ func toLinks(obj interface{}) ([]Link, error) {
 		addLinks(raw)
 	case []interface{}:
 		for _, v := range raw {
-			addLinks(v.(map[interface{}]interface{}))
+			switch linkRaw := v.(type) {
+			case map[interface{}]interface{}:
+				addLinks(v.(map[interface{}]interface{}))
+			default:
+			return links, fmt.Errorf("unsupported type for `nav` link item (%T), looking for map (`text: href`)", linkRaw)
+			}
 		}
 	default:
 		return links, fmt.Errorf("unsupported type for `nav` variable: %T", raw)
