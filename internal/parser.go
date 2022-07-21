@@ -73,9 +73,9 @@ var reTimestamp = regexp.MustCompile(`T.+`)
 func ParseText(text string) (*ParsedText, error) {
 	var buf bytes.Buffer
 	hili := highlighting.NewHighlighting(
-		highlighting.WithStyle("dracula"),
 		highlighting.WithFormatOptions(
 			html.WithLineNumbers(true),
+			html.WithClasses(true),
 		),
 	)
 	md := goldmark.New(

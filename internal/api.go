@@ -648,6 +648,7 @@ func serveFile(file string, contentType string) http.HandlerFunc {
 func createStaticRoutes() []Route {
 	return []Route{
 		NewRoute("GET", "/main.css", serveFile("main.css", "text/css")),
+		NewRoute("GET", "/syntax.css", serveFile("syntax.css", "text/css")),
 		NewRoute("GET", "/card.png", serveFile("card.png", "image/png")),
 		NewRoute("GET", "/favicon-16x16.png", serveFile("favicon-16x16.png", "image/png")),
 		NewRoute("GET", "/favicon-32x32.png", serveFile("favicon-32x32.png", "image/png")),
