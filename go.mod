@@ -2,8 +2,10 @@ module git.sr.ht/~erock/prose.sh
 
 go 1.18
 
+// replace git.sr.ht/~erock/wish => /home/erock/pico/wish
+
 require (
-	git.sr.ht/~erock/wish v0.0.0-20220718203613-dbb5af49be0f
+	git.sr.ht/~erock/wish v0.0.0-20220722020545-6e07fa9b5521
 	github.com/alecthomas/chroma v0.10.0
 	github.com/charmbracelet/wish v0.5.0
 	github.com/gliderlabs/ssh v0.3.4
