@@ -73,7 +73,11 @@ code, kbd, samp, pre {
 }
 
 code, kbd, samp {
-  background-color: var(--code) !important;
+  background-color: var(--code);
+}
+
+pre > code {
+  background-color: inherit;
 }
 
 code {
