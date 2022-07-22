@@ -275,6 +275,18 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 			logger.Error(err)
 		}
 
+		// we need the blog name from the readme unfortunately
+		readme, err := dbpool.FindPostWithFilename("_readme", user.ID)
+		if err == nil {
+			readmeParsed, err := ParseText(readme.Text)
+			if err != nil {
+				logger.Error(err)
+			}
+			if readmeParsed.MetaData.Title != "" {
+				blogName = readmeParsed.MetaData.Title
+			}
+		}
+
 		data = PostPageData{
 			Site:         *cfg.GetSiteData(),
 			PageTitle:    GetPostTitle(post),
