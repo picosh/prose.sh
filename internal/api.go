@@ -545,7 +545,7 @@ func rssBlogHandler(w http.ResponseWriter, r *http.Request) {
 
 		item := &feeds.Item{
 			Id:      realUrl,
-			Title:   post.Title,
+			Title:   FilenameToTitle(post.Filename, post.Title),
 			Link:    &feeds.Link{Href: realUrl},
 			Content: tpl.String(),
 			Created: *post.PublishAt,
